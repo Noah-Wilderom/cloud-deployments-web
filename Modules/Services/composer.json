@@ -1,0 +1,30 @@
+{
+    "name": "NoahWilderom/services",
+    "description": "",
+    "authors": [
+        {
+            "name": "Noah Wilderom",
+            "email": "wilderomnoah@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Services\\": "app/",
+            "Modules\\Services\\Database\\Factories\\": "database/factories/",
+            "Modules\\Services\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Services\\Tests\\": "tests/"
+        }
+    }
+}

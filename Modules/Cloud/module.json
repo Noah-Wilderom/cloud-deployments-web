@@ -1,0 +1,11 @@
+{
+    "name": "Cloud",
+    "alias": "cloud",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Cloud\\Providers\\CloudServiceProvider"
+    ],
+    "files": []
+}

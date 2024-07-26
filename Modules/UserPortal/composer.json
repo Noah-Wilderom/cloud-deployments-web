@@ -1,0 +1,30 @@
+{
+    "name": "NoahWilderom/userportal",
+    "description": "",
+    "authors": [
+        {
+            "name": "Noah Wilderom",
+            "email": "wilderomnoah@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\UserPortal\\": "app/",
+            "Modules\\UserPortal\\Database\\Factories\\": "database/factories/",
+            "Modules\\UserPortal\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\UserPortal\\Tests\\": "tests/"
+        }
+    }
+}

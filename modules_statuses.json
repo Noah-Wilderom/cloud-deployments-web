@@ -1,0 +1,8 @@
+{
+    "Teams": true,
+    "Orders": true,
+    "Items": true,
+    "Cloud": true,
+    "UserPortal": true,
+    "Services": true
+}

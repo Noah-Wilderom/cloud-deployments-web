@@ -15,6 +15,7 @@ use Modules\Cloud\Events\SSH\ServerInitializingLogs;
 use Modules\Cloud\Events\SSH\ServerTaskLog;
 use Modules\Cloud\Models\Server;
 use App\SSH;
+use Modules\Cloud\Tasks\InitServerTask;
 use Throwable;
 
 class ProvisionServer implements ShouldQueue
@@ -41,6 +42,11 @@ class ProvisionServer implements ShouldQueue
     public function handle(): void
     {
         $softwareStack = Software::defaultStack($this->server->type);
+
+        $this->server
+            ->runTask(InitServerTask::class, new ServerTaskLog($this->server))
+            ->asRoot()
+            ->handle();
 
         foreach($softwareStack as $software) {
             $this->server

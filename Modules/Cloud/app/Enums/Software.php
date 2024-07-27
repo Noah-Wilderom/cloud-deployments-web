@@ -32,14 +32,14 @@ enum Software: string {
 
     public function displayName(): string {
         return match($this) {
+            self::Php => 'PHP',
             self::Caddy => 'Caddy',
             self::Nginx => 'Nginx',
-            self::Composer => 'Composer',
-            self::MySql => 'MySql',
             self::Node => 'Node',
-            self::Php => 'PHP',
             self::Redis => 'Redis',
+            self::MySql => 'MySql',
             self::Certbot => "Certbot",
+            self::Composer => 'Composer',
         };
     }
 
@@ -50,13 +50,13 @@ enum Software: string {
     public static function defaultStack(ServerType $serverType): array {
         return match($serverType) {
             ServerType::Webserver => [
+                self::Php,
                 self::Nginx,
-                self::Composer,
                 self::MySql,
 //                self::Node,
-                self::Php,
 //                self::Redis,
                 self::Certbot,
+                self::Composer,
             ],
         };
     }

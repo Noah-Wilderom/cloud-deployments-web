@@ -6,6 +6,7 @@ use App\Enums\IntegrationProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Response as InertiaResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
@@ -44,8 +45,10 @@ class ServerController extends Controller
     }
 
     public function show(Server $server): InertiaResponse {
+        $server->loadMissing(["projects", "tasks"]);
         return inertia("Cloud::Servers/Show", [
             "server" => $server,
+//            "initLogs" => Storage::disk("ssh-logs")->get($server->getKey()),
         ]);
     }
 
@@ -60,16 +63,17 @@ class ServerController extends Controller
 
         $serverImage = $service->images()->getByName("ubuntu-24.04", "x86");
         $serverLocation = $service->locations()->getByName("nbg1");
-        $sshKey = $service->sshKeys()->create(sprintf("cloud-deployments-%s", $sshKeyPairDir), Storage::disk("keypairs")->get($sshPubKeyPath));
+        $sshKey = $service->sshKeys()->create(sprintf("cloud-deployments-%s", $sshKeyPairDir), Crypt::decryptString(Storage::disk("keypairs")->get($sshPubKeyPath)));
         $serverType = $service->serverTypes()->getById($request->get("cloud_provider_type"));
         $serverResp = $service->servers()->createInLocation(
             $request->get("name"),
             $serverType,
             $serverImage,
             $serverLocation,
-            [$sshKey],
+            [$sshKey->id],
         );
 
+        $serverRespData = $serverResp->getResponsePart("server");
         $server = Server::create([
             "user_id" => $request->user()->id,
             "customer_id" => $request->get("customer_id"),
@@ -78,14 +82,14 @@ class ServerController extends Controller
             "status" => ServerStatus::Created,
             "name" => $request->get("name"),
             "cloud_provider" => new ServerCloudProviderData(
-                id: $serverResp["server"]["id"],
+                id: $serverRespData->id,
                 type: $request->get("cloud_provider_type"),
-                iso: $serverResp["server"]["iso"]["name"],
+                iso: sprintf("%s (%s)", $serverRespData->image->name, $serverRespData->image->architecture),
                 sshKeyId: $sshKey->id,
             ),
             "host" => [
-                "ipv4" => $serverResp["server"]["public_net"]["ipv4"],
-                "ipv6" => $serverResp["server"]["public_net"]["ipv6"],
+                "ipv4" => $serverRespData->public_net->ipv4->ip,
+                "ipv6" => $serverRespData->public_net->ipv6->ip,
             ],
         ]);
 

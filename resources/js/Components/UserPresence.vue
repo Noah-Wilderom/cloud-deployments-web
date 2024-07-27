@@ -42,7 +42,6 @@ onBeforeUnmount(() => {
 })
 
 onMounted(() => {
-    console.log("onMounted")
     nextTick(() => {
         joinChannel()
     });

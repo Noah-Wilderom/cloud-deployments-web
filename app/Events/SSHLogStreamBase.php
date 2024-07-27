@@ -8,10 +8,12 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Modules\Cloud\Models\Task;
 
-abstract class SSHLogStreamBase implements ShouldBroadcast
+abstract class SSHLogStreamBase
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public string $logLine;
+    public ?Task $task = null;
 }

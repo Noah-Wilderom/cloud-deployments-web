@@ -1,7 +1,8 @@
 <?php
 
-namespace Modules\Cloud\Events;
+namespace Modules\Cloud\Events\SSH;
 
+use App\Events\SSHLogStreamBase;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -10,8 +11,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Cloud\Models\Server;
+use Modules\Cloud\Models\Task;
 
-class ServerUpdated implements ShouldBroadcast
+class ServerTaskLog extends SSHLogStreamBase implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,7 +21,7 @@ class ServerUpdated implements ShouldBroadcast
      * Create a new event instance.
      */
     public function __construct(
-        public Server $server
+        public Server $server,
     )
     {
         //
@@ -31,7 +33,7 @@ class ServerUpdated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel("server-updated.{$this->server->getKey()}"),
+            new PrivateChannel("ssh-logs.server.{$this->server->getKey()}.task.{$this->task->getKey()}"),
         ];
     }
 }

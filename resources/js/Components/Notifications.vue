@@ -57,15 +57,10 @@ const SetNotification = (notification) => {
                                 <InformationCircleIcon v-if="notification.type === 'info'" class="h-6 w-6 text-blue-400" aria-hidden="true" />
                             </div>
                             <div class="ml-3 w-0 flex-1 pt-0.5">
-                                <p class="text-sm font-medium text-gray-900">{{ notification.title }}</p>
+                                <p class="text-sm font-medium light:text-gray-900 dark:text-black">{{ notification.title }}</p>
                                 <p class="mt-1 text-sm text-gray-500">{{ notification.description }}</p>
                             </div>
-                            <div class="ml-4 flex flex-shrink-0">
-                                <button type="button" class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                    <span class="sr-only">Close</span>
-                                    <XMarkIcon class="h-5 w-5" aria-hidden="true" />
-                                </button>
-                            </div>
+
                         </div>
                     </div>
                 </div>

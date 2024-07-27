@@ -119,6 +119,8 @@ return [
     */
 
     'silenced' => [
+        \Laravel\Telescope\Jobs\ProcessPendingUpdates::class,
+        \Modules\Cloud\Jobs\CheckServerConnection::class,
         // App\Jobs\ExampleJob::class,
     ],
 
@@ -166,7 +168,7 @@ return [
     |
     */
 
-    'memory_limit' => 64,
+    'memory_limit' => 4096,
 
     /*
     |--------------------------------------------------------------------------
@@ -188,9 +190,9 @@ return [
             'maxProcesses' => 1,
             'maxTime' => 0,
             'maxJobs' => 0,
-            'memory' => 128,
+            'memory' => 4096,
             'tries' => 1,
-            'timeout' => 60,
+            'timeout' => 1800,
             'nice' => 0,
         ],
     ],

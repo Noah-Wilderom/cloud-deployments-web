@@ -5,6 +5,7 @@ namespace App\SSH;
 use App\Events\SSHLogStreamBase;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use phpseclib3\Net\SSH2;
 use phpseclib3\Crypt\PublicKeyLoader;
@@ -14,16 +15,18 @@ class Connection {
     private int $port;
     private string $username;
     private string $privateKeyPath;
+    private int $timeout;
     private ?SSHLogStreamBase $event;
     private string $logFilePath;
 
-    public function __construct(string $host, int $port, string $username, string $privateKeyPath, ?SSHLogStreamBase $event = null, string $logFileId = null) {
+    public function __construct(string $host, int $port, string $username, string $privateKeyPath, int $timeout = 10, ?SSHLogStreamBase $event = null, string $logFileId = null) {
         $this->host = $host;
         $this->port = $port;
         $this->username = $username;
         $this->privateKeyPath = $privateKeyPath;
+        $this->timeout = $timeout;
         $this->event = $event;
-        $this->logFilePath = Storage::disk("ssh-logs")->path($logFileId ?? uuidV7());
+        $this->logFilePath = $logFileId ?? uuidV7();
     }
 
     public function ping(): bool {
@@ -32,36 +35,70 @@ class Connection {
         $privateKeyContents = Crypt::decryptString($privateKeyContents);
         $privateKey = PublicKeyLoader::loadPrivateKey($privateKeyContents);
         // Connect to the server
-        $ssh = new SSH2($this->host, $this->port);
+        $ssh = new SSH2($this->host, $this->port, timeout: $this->timeout);
         $login = $ssh->login($this->username, $privateKey);
         $ssh->disconnect();
         return $login;
     }
 
     public function runCommand(string $command): bool {
-        // Load the private key
-        $privateKeyContents = Storage::disk("keypairs")->get($this->privateKeyPath);
-        $privateKeyContents = Crypt::decryptString($privateKeyContents);
-        $privateKey = PublicKeyLoader::loadPrivateKey($privateKeyContents);
+        try {
+            // Load the private key
+            Log::info('Loading private key.', ['path' => $this->privateKeyPath]);
+            $privateKeyContents = Storage::disk("keypairs")->get($this->privateKeyPath);
+            $privateKeyContents = Crypt::decryptString($privateKeyContents);
+            $privateKey = PublicKeyLoader::loadPrivateKey($privateKeyContents);
 
-        // Connect to the server
-        $ssh = new SSH2($this->host, $this->port);
-        if (!$ssh->login($this->username, $privateKey)) {
-            throw new \Exception('Login failed');
+            Log::info('Attempting SSH connection.', ['host' => $this->host, 'port' => $this->port, 'timeout' => $this->timeout]);
+            $ssh = new SSH2($this->host, $this->port, timeout: $this->timeout);
+
+            if (!$ssh->login($this->username, $privateKey)) {
+                Log::error('SSH login failed.', ['host' => $this->host]);
+                throw new \Exception('SSH login failed');
+            }
+
+            // Log command execution attempt
+            Log::info('Executing command via SSH.', ['command' => $command]);
+
+            $start = now();
+            // Run the command
+            $output = $ssh->exec($command, function(string $log) {
+                $log = trim($log) . PHP_EOL;
+                if (str_replace(PHP_EOL, "", $log) !== "") {
+                    Log::info('Command output received.', ['log' => $log]);
+                    Storage::disk("ssh-logs")->append($this->logFilePath, $log);
+                    if (!is_null($this->event)) {
+                        $event = clone $this->event;
+                        $event->logLine = $log;
+                        Event::dispatch($event);
+                    }
+                }
+            });
+
+            // Log command execution result
+            Log::info('Command executed via SSH.', ['output' => $output, "time" => sprintf("%.2f Seconds", $start->diffInMilliseconds(now()) / 1000)]);
+
+            $ssh->disconnect();
+
+            return (string)$output;
+        } catch (\Exception $e) {
+            // Log the exception message
+            Log::error('Error in runCommand.', ['exception' => $e->getMessage()]);
+
+            // Re-throw the exception for further handling
+            throw $e;
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function executeShellScript(string $filepath): bool {
+        $script = Storage::disk("scripts")->get($filepath);
+        if (is_null($script)) {
+            throw new \Exception(sprintf("Script not found at: %s", Storage::disk("scripts")->path($filepath)));
         }
 
-        // Run the command
-        $output = $ssh->exec($command, function(string $log) {
-            Storage::disk("ssh-logs")->append($this->logFilePath, $log);
-            if(is_null($this->event)) {
-                $event = clone $this->event;
-                $event->logLine = $log;
-                Event::dispatch($event);
-            }
-        });
-
-        $ssh->disconnect();
-
-        return (string) $output;
+        return $this->runCommand(sprintf("echo '%s' | sh", $script));
     }
 }

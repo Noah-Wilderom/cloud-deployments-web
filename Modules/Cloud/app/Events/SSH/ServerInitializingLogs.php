@@ -12,7 +12,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Cloud\Models\Server;
 
-class ServerInitialingLogs extends SSHLogStreamBase
+class ServerInitializingLogs extends SSHLogStreamBase implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

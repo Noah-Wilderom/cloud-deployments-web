@@ -17,6 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\EnsureUserLocale::class,
             HandleInertiaRequests::class,
         ]);
+
+//        if(str_contains(config("app.url"), "http://")) {
+            $middleware->validateCsrfTokens(
+                except: ['*/']
+            );
+//        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

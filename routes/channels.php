@@ -23,6 +23,10 @@ Broadcast::channel("ssh-logs.server-initializing.{serverId}", function (\App\Mod
     return $user->id === \Modules\Cloud\Models\Server::find($serverId)?->user_id;
 });
 
+Broadcast::channel("ssh-logs.server.{serverId}.task.{taskId}", function (\App\Models\User $user, string $serverId, string $taskId) {
+    return $user->id === \Modules\Cloud\Models\Server::find($serverId)?->user_id;
+});
+
 Broadcast::channel("server-updated.{serverId}", function (\App\Models\User $user, string $serverId) {
     return $user->id === \Modules\Cloud\Models\Server::find($serverId)?->user_id;
 });

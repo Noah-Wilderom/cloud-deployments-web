@@ -116,15 +116,15 @@ const assetPath = computed(() => page.props.assetPath)
                     >
                         <SidebarDropdownItem
                             title="Profile"
-                            :route="$route('userportal::profile.index')"
+                            :route="$route('userportal::profile.index', {'tab': 'general'})"
+                        />
+                        <SidebarDropdownItem
+                            title="SSH Keys"
+                            :route="$route('userportal::profile.index', {'tab': 'ssh-keys'})"
                         />
                         <SidebarDropdownItem
                             title="Integrations"
                             :route="$route('userportal::profile.index', {'tab': 'integrations'})"
-                        />
-                        <SidebarDropdownItem
-                            title="SSH Keys"
-                            :route="$route('userportal::profile.index')"
                         />
                         <SidebarDropdownItem
                             title="Backup configuration"

@@ -131,6 +131,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserIntegration::class);
     }
 
+    public function keys(): HasMany {
+        return $this->hasMany(UserKey::class);
+    }
+
     public function hasIntegration(IntegrationProvider $provider): bool {
         return $this->userIntegrations()
             ->where("provider", $provider)

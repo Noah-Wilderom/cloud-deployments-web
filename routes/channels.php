@@ -27,6 +27,14 @@ Broadcast::channel("ssh-logs.server.{serverId}.task.{taskId}", function (\App\Mo
     return $user->id === \Modules\Cloud\Models\Server::find($serverId)?->user_id;
 });
 
+Broadcast::channel("server.{serverId}.task.created", function (\App\Models\User $user, string $serverId) {
+    return $user->id === \Modules\Cloud\Models\Server::find($serverId)?->user_id;
+});
+
+Broadcast::channel("server.{serverId}.task.{taskId}.updated", function (\App\Models\User $user, string $serverId, string $taskId) {
+    return $user->id === \Modules\Cloud\Models\Server::find($serverId)?->user_id;
+});
+
 Broadcast::channel("server-updated.{serverId}", function (\App\Models\User $user, string $serverId) {
     return $user->id === \Modules\Cloud\Models\Server::find($serverId)?->user_id;
 });

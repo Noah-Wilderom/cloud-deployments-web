@@ -41,8 +41,35 @@ const saveNewPassword = () => {
 }
 
 const props = defineProps({
-    integrations: Object
+    integrations: Object,
+    sshKeys: Object,
 })
+
+const createSshKeyForm = useForm({
+    name: null,
+    public_key: null,
+})
+
+const openCreateSshKey = () => {
+    const modalEl = document.getElementById("create_ssh_key");
+    const modal = KTModal.getInstance(modalEl);
+    modal.show();
+}
+
+const createSshKey = () => {
+    createSshKeyForm.post(route("userportal::profile.ssh-key"), {
+        onSuccess: (resp) => {
+            const modalEl = document.getElementById("create_ssh_key");
+            const modal = KTModal.getInstance(modalEl);
+            modal.hide();
+
+            router.visit(resp.url, {
+                preserveScroll: true,
+                only: ["sshKeys"]
+            })
+        }
+    })
+}
 
 const selectedProvider = ref(null);
 const openConnectProvider = (provider) => {
@@ -129,6 +156,13 @@ const connectProvider = () => {
                                 <Link :href="route('userportal::profile.index', {'tab': 'general'})" method="GET" class="menu-link gap-1.5 pb-2 lg:pb-4 px-2" tabindex="0">
                                     <span class="menu-title text-nowrap font-medium text-sm text-gray-700 menu-item-active:text-primary menu-item-active:font-semibold menu-item-here:text-primary menu-item-here:font-semibold menu-item-show:text-primary menu-link-hover:text-primary">
                                         General
+                                    </span>
+                                </Link>
+                            </div>
+                            <div :class="{ 'active': tab === 'ssh-keys'}" class="menu-item border-b-2 border-b-transparent menu-item-active:border-b-primary menu-item-here:border-b-primary">
+                                <Link :href="route('userportal::profile.index', {'tab': 'ssh-keys'})" method="GET" class="menu-link gap-1.5 pb-2 lg:pb-4 px-2" tabindex="0">
+                                    <span class="menu-title text-nowrap font-medium text-sm text-gray-700 menu-item-active:text-primary menu-item-active:font-semibold menu-item-here:text-primary menu-item-here:font-semibold menu-item-show:text-primary menu-link-hover:text-primary">
+                                        SSH Keys
                                     </span>
                                 </Link>
                             </div>
@@ -596,6 +630,46 @@ const connectProvider = () => {
             </div>
         </div>
 
+        <div v-if="tab === 'ssh-keys'" class="container-fixed">
+            <div class="card shadow sm:rounded-lg">
+                <div class="card-header">
+                    <h3 class="text-base font-semibold leading-6 text-gray-900">Keys</h3>
+                    <div>
+                        <button @click="openCreateSshKey" type="button" class="btn btn-sm btn-light">
+                            New SSH Key
+                        </button>
+                    </div>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <div v-for="key in sshKeys" class="mb-4 rounded-md bg-light px-6 py-5 sm:flex sm:items-start sm:justify-between">
+                        <div class="sm:flex sm:items-start">
+                            <i :class="{ 'text-success': key.used_at, 'text-gray-500': !key.used_at }" class="ki-solid ki-key text-3xl"></i>
+                            <div class="mt-3 sm:ml-4 sm:mt-0">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ key.name }} {{ key.signature ? `&middot; ${key.signature}` : '' }}
+                                    <span v-if="key.primary" class="badge mx-2 badge-xs badge-primary font-bold">
+                                        Primary
+                                    </span>
+                                </div>
+                                <div class="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
+                                    <div>Added at {{ key.created_at }}</div>
+                                    <span class="hidden sm:mx-2 sm:inline" aria-hidden="true">&middot;</span>
+
+                                    <div v-if="key.used_at" class="mt-1 sm:mt-0">Last used at {{ key.used_at }}</div>
+                                    <div v-else class="mt-1 sm:mt-0">Not used yet</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 sm:ml-6 sm:mt-0 sm:flex-shrink-0">
+                            <button type="button" class="btn btn-sm btn-danger">
+                                <i class="ki-solid ki-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div v-if="tab === 'integrations'">
             <div class="container-fixed">
                 <div class="flex flex-wrap items-center lg:items-end justify-between gap-5 pb-7.5">
@@ -683,6 +757,54 @@ const connectProvider = () => {
                                 <input class="input" v-model="connectProviderForm.token" type="text" />
                                 <span v-if="connectProviderForm.errors.token" class="form-hint text-danger">
                                     {{ connectProviderForm.errors.token }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-end">
+                    <div class="flex gap-4">
+                        <button type="button" class="btn btn-light" data-modal-dismiss="true">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal" data-modal-backdrop-static="true" data-modal="true" id="create_ssh_key">
+            <form @submit.prevent="createSshKey" class="modal-content max-w-[600px] top-[10%]">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        New SSH Key
+                    </h3>
+                    <button type="button" class="btn btn-xs btn-icon btn-light" data-modal-dismiss="true">
+                        <i class="ki-outline ki-cross"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="w-full">
+                        <div class="flex py-2 items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                            <label class="form-label max-w-32">
+                                Name
+                            </label>
+                            <div class="flex flex-col w-full gap-1">
+                                <input class="input" v-model="createSshKeyForm.name" type="text" />
+                                <span v-if="createSshKeyForm.errors.name" class="form-hint text-danger">
+                                    {{ createSshKeyForm.errors.name }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex py-2 items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                            <label class="form-label max-w-32">
+                                Public Key
+                            </label>
+                            <div class="flex flex-col w-full gap-1">
+                                <textarea class="textarea" rows="14" v-model="createSshKeyForm.public_key" type="text"></textarea>
+                                <span v-if="createSshKeyForm.errors.public_key" class="form-hint text-danger">
+                                    {{ createSshKeyForm.errors.public_key }}
                                 </span>
                             </div>
                         </div>

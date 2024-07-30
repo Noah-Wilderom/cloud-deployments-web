@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Cloud\Data\ServerCloudProviderData;
 use Modules\Cloud\Enums\ServerStatus;
 use Modules\Cloud\Enums\ServerType;
 use Modules\Cloud\Enums\Software;
 use Modules\Cloud\Observers\ServerObserver;
+use Modules\Services\Models\ServicePlan;
 
 #[ObservedBy(ServerObserver::class)]
 class Server extends Model

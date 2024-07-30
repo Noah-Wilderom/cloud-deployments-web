@@ -3,12 +3,14 @@
 namespace App\SSH;
 
 use App\Events\SSHLogStreamBase;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use phpseclib3\Net\SSH2;
 use phpseclib3\Crypt\PublicKeyLoader;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class Connection {
     private string $host;
@@ -44,47 +46,40 @@ class Connection {
     public function runCommand(string $command): bool {
         try {
             // Load the private key
-            Log::info('Loading private key.', ['path' => $this->privateKeyPath]);
             $privateKeyContents = Storage::disk("keypairs")->get($this->privateKeyPath);
             $privateKeyContents = Crypt::decryptString($privateKeyContents);
             $privateKey = PublicKeyLoader::loadPrivateKey($privateKeyContents);
 
-            Log::info('Attempting SSH connection.', ['host' => $this->host, 'port' => $this->port, 'timeout' => $this->timeout]);
             $ssh = new SSH2($this->host, $this->port, timeout: $this->timeout);
 
             if (!$ssh->login($this->username, $privateKey)) {
-                Log::error('SSH login failed.', ['host' => $this->host]);
                 throw new \Exception('SSH login failed');
             }
 
             // Log command execution attempt
-            Log::info('Executing command via SSH.', ['command' => $command]);
-
             $start = now();
             // Run the command
             $output = $ssh->exec($command, function(string $log) {
-                $log = trim($log) . PHP_EOL;
+                $log = trim($log). PHP_EOL;
                 if (str_replace(PHP_EOL, "", $log) !== "") {
-                    Log::info('Command output received.', ['log' => $log]);
                     Storage::disk("ssh-logs")->append($this->logFilePath, $log);
                     if (!is_null($this->event)) {
                         $event = clone $this->event;
                         $event->logLine = $log;
+                        Log::info(sprintf("Dispatching (%d) bytes", strlen($log)));
                         Event::dispatch($event);
                     }
                 }
             });
 
             // Log command execution result
-            Log::info('Command executed via SSH.', ['output' => $output, "time" => sprintf("%.2f Seconds", $start->diffInMilliseconds(now()) / 1000)]);
+            Log::info('Command executed via SSH.', ['output' => $output, "ssh_status" => $ssh->getExitStatus(), "time" => sprintf("%.2f Seconds", $start->diffInMilliseconds(now()) / 1000)]);
 
             $ssh->disconnect();
-
-            return (string)$output;
+            return $ssh->getExitStatus() == CommandAlias::SUCCESS;
         } catch (\Exception $e) {
             // Log the exception message
             Log::error('Error in runCommand.', ['exception' => $e->getMessage()]);
-
             // Re-throw the exception for further handling
             throw $e;
         }

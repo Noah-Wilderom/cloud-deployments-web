@@ -9,3 +9,5 @@ systemctl restart ssh
 
 mkdir -p /projects
 chmod 711 /projects
+
+

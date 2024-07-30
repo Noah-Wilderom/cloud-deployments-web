@@ -49,34 +49,18 @@ class ProvisionServer implements ShouldQueue
             ->handle();
 
         foreach($softwareStack as $software) {
-            $this->server
-                ->runTask($software->getTask(), new ServerTaskLog($this->server))
-                ->asRoot()
-                ->handle();
+            try {
+                $this->server
+                    ->runTask($software->getTask(), new ServerTaskLog($this->server))
+                    ->asRoot()
+                    ->handle();
+            } catch(\Exception $e) {
+                Log::info("ProvisionServer job has failed", ["server" => $this->server->getKey(), "software" => $software->name]);
+                throw $e;
+            }
         }
-//        try {
-//            // TODO: a lot of logic to execute the scripts one by one
-//            Log::info("ProvisionServer job started.");
-//            $files = Storage::disk("scripts")->allFiles("server/initialization");
-//            foreach ($files as $file) {
-//                Log::info('Executing script.', ['file' => $file]);
-//                $sshConnection = new SSH\Connection(
-//                    host: $this->server->host["ipv4"],
-//                    port: 22,
-//                    username: "root",
-//                    privateKeyPath: sprintf("%s/id_rsa", $this->server->ssh_credentials_path),
-//                    timeout: $this->timeout,
-//                    event: new ServerInitializingLogs($this->server),
-//                    logFileId: $this->server->getKey(),
-//                );
-//
-//                $sshConnection->executeShellScript($file);
-//                Log::info('Script executed successfully.', ['file' => $file]);
-//            }
-//        } catch (\Exception $e) {
-//            Log::error('ProvisionServer job failed.', ['exception' => $e->getMessage()]);
-//            throw $e;
-//        }
+
+        $this->server->update(["status" => ServerStatus::Online]);
     }
 
     public function failed(Throwable $exception)

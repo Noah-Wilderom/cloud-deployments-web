@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 
 class InitServerTask extends Task {
     public function name(): string {
-        return "Init Server";
+        return "Initialize Server";
     }
     public function command(): string
     {

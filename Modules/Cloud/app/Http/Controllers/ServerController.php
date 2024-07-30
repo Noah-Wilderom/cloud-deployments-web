@@ -45,7 +45,7 @@ class ServerController extends Controller
     }
 
     public function show(Server $server): InertiaResponse {
-        $server->loadMissing(["projects", "tasks"]);
+        $server->loadMissing(["projects", "tasks", "softwares.task"]);
         return inertia("Cloud::Servers/Show", [
             "server" => $server,
 //            "initLogs" => Storage::disk("ssh-logs")->get($server->getKey()),

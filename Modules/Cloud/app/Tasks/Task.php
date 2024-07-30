@@ -3,6 +3,7 @@
 namespace Modules\Cloud\Tasks;
 
 use App\Events\SSHLogStreamBase;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Modules\Cloud\Enums\TaskStatus;
 use Modules\Cloud\Events\SSH\ServerInitializingLogs;
@@ -38,6 +39,9 @@ abstract class Task {
 
     public abstract function command(): string;
     public abstract function name(): string;
+    public function callback(bool $commandSuccess): void {
+        //
+    }
 
     public function asProjectUser(Project $project): self {
         $this->project = $project;
@@ -78,10 +82,15 @@ abstract class Task {
             }
 
             $this->task->update(["status" => TaskStatus::Running, "started_at" => now()]);
-            $output = $this->conn->runCommand($this->command());
-            if ((bool) $output)  {
+            $ok = $this->conn->runCommand($this->command());
+            if ($ok)  {
                 $this->task->update(["status" => TaskStatus::Success, "stopped_at" => now()]);
+            } else {
+                Log::info("Task failed", ["task" => $this->task->name, "server" => $this->server->id]);
+                $this->task->update(["status" => TaskStatus::Failed, "stopped_at" => now()]);
             }
+
+            $this->callback($ok);
         } catch(\Exception $e) {
             $this->task->update(["status" => TaskStatus::Failed]);
             throw $e;

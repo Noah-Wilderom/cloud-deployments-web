@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Middleware\InternalApiOnly;
 use Illuminate\Support\Facades\Route;
-use Modules\Services\Http\Controllers\ServicesController;
+use Modules\Services\Http\Controllers\Api;
 
 /*
  *--------------------------------------------------------------------------
@@ -13,3 +14,7 @@ use Modules\Services\Http\Controllers\ServicesController;
  * is assigned the "api" middleware group. Enjoy building your API!
  *
 */
+
+Route::middleware(InternalApiOnly::class)->group(function() {
+    Route::get("/service-plans/{servicePlan}/services", [Api\ServicePlanController::class, "services"])->name("service-plan.services");
+});

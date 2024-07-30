@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_plans', function (Blueprint $table) {
+        Schema::create('user_keys', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
-            $table->string("service_type")->nullable();
+            $table->boolean("primary")->default(false);
             $table->string("name");
-            $table->integer("base_price");
-            $table->text("resources");
-            $table->text("settings");
+            $table->string("path");
+            $table->string("signature")->nullable();
+            $table->timestamp("last_used_at")->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_plans');
+        Schema::dropIfExists('user_keys');
     }
 };

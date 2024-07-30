@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(\Modules\Services\Models\ServicePlan::class)->constrained()->cascadeOnDelete();
             $table->nullableUuidMorphs("service");
             $table->string("name")->nullable();
+            $table->integer("price");
             $table->timestamp("canceled_at")->nullable();
             $table->timestamps();
         });

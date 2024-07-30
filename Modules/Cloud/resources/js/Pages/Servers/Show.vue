@@ -26,10 +26,34 @@ const joinChannels = () => {
             })
             console.log(e)
         })
+    Echo.private(`server.${props.server.id}.task.created`)
+        .listen("\\Modules\\Cloud\\Events\\ServerTaskCreated", (e) => {
+            router.reload({
+                preserveScroll: true,
+                only: ["server"]
+            })
+            console.log(e)
+        })
 
     for(let i = 0; i < props.server.tasks.length; i++) {
+
+        Echo.private(`server.${props.server.id}.task.${props.server.tasks[i].id}.updated`)
+            .listen("\\Modules\\Cloud\\Events\\ServerTaskUpdated", (e) => {
+                router.reload({
+                    preserveScroll: true,
+                    only: ["server"]
+                })
+                console.log(e)
+            })
         Echo.private(`ssh-logs.server.${props.server.id}.task.${props.server.tasks[i].id}`)
             .listen("\\Modules\\Cloud\\Events\\SSH\\ServerTaskLog", (e) => {
+                if(! props.server.tasks.find(task => task.id === e.task.id)) {
+                    router.reload({
+                        preserveScroll: true,
+                        only: ["server"]
+                    })
+                }
+
                 console.log(e)
                 let message = e.logLine
                 if (! logs.value[e.task.id]) {
@@ -279,6 +303,143 @@ onBeforeUnmount(() => {
                                 @click="scrollToBottom(task.id)">Scroll to
                             Bottom
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="tab === 'software'" class="container-fixed">
+            <div class="grid">
+                <div class="card card-grid min-w-full">
+                    <div class="card-header py-5 flex-wrap">
+                        <h3 class="card-title">
+                            Installed Software
+                        </h3>
+                        <div class="flex gap-6">
+                            <div class="relative">
+                                <i class="ki-outline ki-magnifier leading-none text-md text-gray-500 absolute top-1/2 left-0 -translate-y-1/2 ml-3">
+                                </i>
+                                <input class="input input-sm pl-8" placeholder="Search Software" type="text"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div data-datatable="true" data-datatable-page-size="5">
+                            <div class="scrollable-x-auto">
+                                <table class="table table-auto table-border" data-datatable-table="true" id="grid_table">
+                                    <thead>
+                                    <tr>
+                                        <th class="min-w-[175px]">
+                                           <span class="sort asc">
+                                               <span class="sort-label">
+                                                   ID
+                                               </span>
+                                               <span class="sort-icon"></span>
+                                           </span>
+                                        </th>
+                                        <th class="min-w-[175px]">
+                                           <span class="sort asc">
+                                               <span class="sort-label">
+                                                   Task
+                                               </span>
+                                               <span class="sort-icon"></span>
+                                           </span>
+                                        </th>
+                                        <th class="min-w-[150px]">
+                                           <span class="sort">
+                                               <span class="sort-label">
+                                                   Software
+                                               </span>
+                                               <span class="sort-icon"></span>
+                                           </span>
+                                        </th>
+                                        <th class="min-w-[150px]">
+                                           <span class="sort">
+                                               <span class="sort-label">
+                                                   Version
+                                               </span>
+                                               <span class="sort-icon"></span>
+                                           </span>
+                                        </th>
+                                        <th class="min-w-[150px]">
+                                           <span class="sort">
+                                               <span class="sort-label">
+                                                   Status
+                                               </span>
+                                               <span class="sort-icon"></span>
+                                           </span>
+                                        </th>
+                                        <th class="w-[80px]">
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-if="server.softwares.length < 1">
+                                        <td colspan="6">
+                                            <button id="openCreateDomain" type="button" class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                <i class="mx-auto text-5xl text-gray-400 ki-filled ki-laptop"></i>
+                                                <span class="mt-2 block text-sm font-semibold text-gray-900">Add a new software</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <tr v-if="server.softwares.length > 0" v-for="software in server.softwares" :key="software.id">
+                                        <td>
+                                           <span class="text-xs font-bold">
+                                               {{ software.id }}
+                                           </span>
+                                        </td>
+                                        <td>
+                                            <Link :href="route('cloud::servers.show', {'server': server.id, 'tab': 'logs', 'selected_task': software.task.id})"
+                                                  method="get"
+                                                  class="link hover:text-blue-700">
+                                                {{ software.task.name }}
+                                            </Link>
+                                        </td>
+                                        <td>
+                                           <span class="">
+                                               {{ software.software }}
+                                           </span>
+                                        </td>
+                                        <td>
+                                           <span class="">
+                                               {{ software.version ?? "Latest" }}
+                                           </span>
+                                        </td>
+                                        <td>
+                                            <span v-if="software.task.status === 'success'" class="badge badge-success">
+                                               <i class="ki-check-circle text-success"></i>
+                                               Installed
+                                           </span>
+                                            <span v-else class="badge badge-danger">
+                                               <i class="ki-cross-circle text-danger"></i>
+                                                Failed
+                                           </span>
+                                        </td>
+                                        <td>
+
+                                            <a class="btn btn-sm btn-light" href="#">
+                                                Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-3 text-gray-600 text-2sm font-medium">
+                                <div class="flex items-center gap-2">
+                                    Show
+                                    <select class="select select-sm w-16" data-datatable-size="true" name="perpage">
+                                    </select>
+                                    per page
+                                </div>
+                                <div class="flex items-center gap-4">
+      <span data-datatable-info="true">
+      </span>
+                                    <div class="pagination" data-datatable-pagination="true">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

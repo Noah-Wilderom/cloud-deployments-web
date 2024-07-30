@@ -19,6 +19,7 @@ use Modules\UserPortal\Http\Controllers\SupportController;
 
 Route::get("/profile", [ProfileController::class, "index"])->name("profile.index");
 Route::post("/profile", [ProfileController::class, "update"])->name("profile.update");
+Route::post("/profile/ssh-key", [ProfileController::class, "addSshKey"])->name("profile.ssh-key");
 Route::post("/profile/change-password", [ProfileController::class, "changePassword"])->name("profile.change-password");
 
 Route::get("/subscription", [SubscriptionController::class, "index"])->name("subscription.index");

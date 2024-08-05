@@ -66,8 +66,8 @@ class Server extends Model
             ->first("installed_version") ?? null;
     }
 
-    public function runTask(string $task, SSHLogStreamBase $event = null): \Modules\Cloud\Tasks\Task {
-        $obj = new $task($this, $event);
+    public function runTask(string $task, SSHLogStreamBase $event = null, $data = []): \Modules\Cloud\Tasks\Task {
+        $obj = new $task($this, $event, $data);
         if ($obj instanceof \Modules\Cloud\Tasks\Task) {
             return $obj;
         }

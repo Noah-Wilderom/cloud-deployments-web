@@ -41,7 +41,7 @@ class ProfileController extends Controller
         ]);
 
         $signaturePieces = explode("= ", $request->get("public_key"));
-        $dir = "user/" . uuidV7();
+        $dir = sprintf("user/%s/%s.pub", uuidV7(), sha1($request->get("public_key")));
 
         $publicKey = Crypt::encryptString($request->get("public_key"));
         Storage::disk("keypairs")->put($dir, $publicKey);
@@ -50,7 +50,7 @@ class ProfileController extends Controller
             "name" => $request->get("name"),
             "path" => $dir,
             "signature" => $signaturePieces[1] ?? null,
-//            "primary" => $request->user()->keys()->count() === 0,
+            "primary" => $request->user()->keys()->count() === 0,
         ]);
 
         return back()
@@ -70,7 +70,7 @@ class ProfileController extends Controller
             'name' => $request->get('name'),
         ]);
 
-        return back()->with("notification", [
+        return back()->with("notifications", [
             "type" => "success",
             "title" => "Profile updated",
             "description" => "Je profiel is zojuist geupdate",
@@ -83,7 +83,7 @@ class ProfileController extends Controller
             'password' => $this->passwordRules($request->user(), confirm: true),
         ]);
 
-        return back()->with("notification", [
+        return back()->with("notifications", [
             "type" => "success",
             "title" => "Password updated",
             "description" => "Je wachtwoord is zojuist geupdate",

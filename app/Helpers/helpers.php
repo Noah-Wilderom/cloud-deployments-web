@@ -65,3 +65,11 @@ if (! function_exists("verifyUuidV7")) {
         return true;
     }
 }
+
+if (! function_exists("generate_random_name")) {
+    function generate_random_name(): string {
+        $generator = new \Nubs\RandomNameGenerator\Alliteration();
+        $name = str_replace(" ", "-", $generator->getName());
+        return strtolower($name);
+    }
+}

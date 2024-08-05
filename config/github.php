@@ -14,7 +14,6 @@ declare(strict_types=1);
 return [
     "client_id" => env("GITHUB_CLIENT_ID"),
     "client_secret" => env("GITHUB_CLIENT_SECRET"),
-    "client_private" => file_get_contents(storage_path(env("GITHUB_CLIENT_PRIVATE_PATH"))),
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +46,7 @@ return [
             'method'     => 'token',
             'token'      => 'your-token',
             // 'backoff'    => false,
-            // 'cache'      => false,
+             'cache'      => true,
             // 'version'    => 'v3',
             // 'enterprise' => false,
         ],

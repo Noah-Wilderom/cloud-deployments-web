@@ -40,7 +40,8 @@ class ServerController extends Controller
             "servers" => Server::all(),
             "customers" => Customer::all(),
             "cloudTypes" => $hetznerServerTypes,
-            "serverTypes" => ServerType::allForSelect()
+            "serverTypes" => ServerType::allForSelect(),
+            "randomName" => generate_random_name(),
         ]);
     }
 

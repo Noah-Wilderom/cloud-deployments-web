@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Modules\Cloud\Enums\ServerStatus;
@@ -15,6 +16,7 @@ use Modules\Cloud\Events\SSH\ServerInitializingLogs;
 use Modules\Cloud\Events\SSH\ServerTaskLog;
 use Modules\Cloud\Models\Server;
 use App\SSH;
+use Modules\Cloud\Tasks\AddPublicKeyTask;
 use Modules\Cloud\Tasks\InitServerTask;
 use Throwable;
 
@@ -41,12 +43,24 @@ class ProvisionServer implements ShouldQueue
      */
     public function handle(): void
     {
+        $this->server->loadMissing(["user.keys"]);
+
         $softwareStack = Software::defaultStack($this->server->type);
 
         $this->server
             ->runTask(InitServerTask::class, new ServerTaskLog($this->server))
             ->asRoot()
             ->handle();
+
+        if($this->server->user->keys()->count() > 0) {
+            $key = $this->server->user->primaryKey();
+            $publicKey = Crypt::decryptString(Storage::disk("keypairs")->get($key->path));
+
+            $this->server
+                ->runTask(AddPublicKeyTask::class, data: [AddPublicKeyTask::PUBLIC_KEY_DATA => $publicKey])
+                ->asRoot()
+                ->handle();
+        }
 
         foreach($softwareStack as $software) {
             try {

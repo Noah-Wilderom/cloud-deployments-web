@@ -19,21 +19,22 @@ abstract class Task {
     protected Server $server;
     protected ?Project $project = null;
 
-    protected array $meta = [];
     protected TaskModel $task;
     protected ?SSHLogStreamBase $event;
+    protected array $data;
 
-    public function __construct(Server $server, SSHLogStreamBase $event = null) {
+    public function __construct(Server $server, SSHLogStreamBase $event = null, $data = []) {
         $this->server = $server;
         $this->event = $event;
+        $this->data = $data;
 
         $this->task = TaskModel::create([
             "server_id" => $this->server->getKey(),
             "project_id" => $this->project?->getKey(),
             "status" => TaskStatus::Created,
             "name" => $this->name(),
-            "type" => self::class,
-            "meta" => $this->meta,
+            "type" => static::class,
+            "meta" => $this->data,
         ]);
     }
 

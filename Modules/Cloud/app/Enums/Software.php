@@ -4,10 +4,11 @@ namespace Modules\Cloud\Enums;
 
 use Modules\Cloud\Tasks\InstallCertbotTask;
 use Modules\Cloud\Tasks\InstallComposerTask;
+use Modules\Cloud\Tasks\InstallDockerTask;
+use Modules\Cloud\Tasks\InstallGoTask;
 use Modules\Cloud\Tasks\InstallMySqlTask;
 use Modules\Cloud\Tasks\InstallNginxTask;
 use Modules\Cloud\Tasks\InstallPhpTask;
-use Modules\Cloud\Tasks\InstallTaskPhp;
 
 enum Software: string {
     case Caddy = 'caddy';
@@ -18,6 +19,8 @@ enum Software: string {
     case Php = 'php';
     case Redis = 'redis';
     case Certbot = "certbot";
+    case Go = "go";
+    case Docker = "docker";
 
     /**
      * @return string[]|null
@@ -40,6 +43,8 @@ enum Software: string {
             self::MySql => 'MySql',
             self::Certbot => "Certbot",
             self::Composer => 'Composer',
+            self::Go => "Go",
+            self::Docker => "Docker"
         };
     }
 
@@ -57,6 +62,8 @@ enum Software: string {
 //                self::Redis,
                 self::Certbot,
                 self::Composer,
+                self::Go,
+                self::Docker,
             ],
         };
     }
@@ -71,6 +78,8 @@ enum Software: string {
             self::MySql => "server/softwares/install_mysql.sh",
             self::Php => "server/softwares/install_php.sh",
             self::Certbot => "server/softwares/install_certbot.sh",
+            self::Go => "server/softwares/install_go.sh",
+            self::Docker => "server/softwares/install_docker.sh",
             default => null,
         };
     }
@@ -82,6 +91,8 @@ enum Software: string {
             self::MySql => InstallMySqlTask::class,
             self::Php => InstallPhpTask::class,
             self::Certbot => InstallCertbotTask::class,
+            self::Go => InstallGoTask::class,
+            self::Docker => InstallDockerTask::class,
             default => null,
         };
     }

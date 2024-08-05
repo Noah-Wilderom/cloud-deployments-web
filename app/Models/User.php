@@ -135,6 +135,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserKey::class);
     }
 
+    public function primaryKey(): ?UserKey {
+        return $this->keys()
+            ->where("primary", true)
+            ->first();
+    }
+
     public function hasIntegration(IntegrationProvider $provider): bool {
         return $this->userIntegrations()
             ->where("provider", $provider)

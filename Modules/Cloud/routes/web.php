@@ -21,6 +21,9 @@ use Modules\Cloud\Http\Controllers\ServerController;
 Route::get("/servers", [ServerController::class, "index"])->name("servers.index");
 Route::get("/servers/{server}", [ServerController::class, "show"])->name("servers.show");
 Route::post("/servers", [ServerController::class, "store"])->name("servers.store");
+
 Route::get("/projects", [ProjectController::class, "index"])->name("projects.index");
+Route::post("/projects", [ProjectController::class, "store"])->name("projects.store");
+
 Route::get("/scripts", [ScriptController::class, "index"])->name("scripts.index");
 Route::get("/backups", [BackupController::class, "index"])->name("backups.index");

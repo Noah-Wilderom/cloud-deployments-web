@@ -35,7 +35,7 @@ class PasswordController extends Controller
             "temporary_password" => false,
         ]);
 
-        return redirect()->route("dashboard")->with("notification", [
+        return redirect()->route("dashboard")->with("notifications", [
             "type" => "success",
             "title" => "Password changed",
             "description" => "Password changed",

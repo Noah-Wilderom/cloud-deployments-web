@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $request->user()->update(["locale" => $lang]);
         App::setLocale($lang);
         return back()
-            ->with("notification", [
+            ->with("notifications", [
                 "type" => "success",
                 "title" => "Language changed",
                 "description" => sprintf("You changed the language to: %s", trans(sprintf("pages.header.language_%s", $lang)))

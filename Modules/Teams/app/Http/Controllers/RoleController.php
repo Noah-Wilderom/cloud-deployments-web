@@ -68,7 +68,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($permissions);
 
-        return back()->with("notification", [
+        return back()->with("notifications", [
             "type" => "success",
             "title" => sprintf("%s updated", $role->name),
             "description" => sprintf("%s now has %d permissions", $role->name, $role->permissions()->count())

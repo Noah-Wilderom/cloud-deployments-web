@@ -46,8 +46,8 @@ class HandleInertiaRequests extends Middleware
             "locale" => App::currentLocale(),
             "queryParams" => $request->query(),
             "flash" => [
-                "notification" => session()->has("notification")
-                    ? session()->get("notification")
+                "notifications" => session()->has("notifications")
+                    ? session()->get("notifications")
                     : null,
             ],
         ]);

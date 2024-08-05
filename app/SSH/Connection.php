@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use phpseclib3\Net\SSH2;
 use phpseclib3\Crypt\PublicKeyLoader;
+use Spatie\Ssh\Ssh;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class Connection {
@@ -58,6 +59,7 @@ class Connection {
 
             // Log command execution attempt
             $start = now();
+
             // Run the command
             $output = $ssh->exec($command, function(string $log) {
                 $log = trim($log). PHP_EOL;

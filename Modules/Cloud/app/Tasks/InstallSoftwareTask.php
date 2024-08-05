@@ -20,7 +20,7 @@ abstract class InstallSoftwareTask extends Task {
             "VERSION" => "8.3", // TODO: run the task multiple times to get the version dynamically?
         ]);
 
-        return sprintf("echo '%s' | sh", addslashes($script));
+        return sprintf("echo '%s' | sh", $script);
     }
 
     public function name(): string {

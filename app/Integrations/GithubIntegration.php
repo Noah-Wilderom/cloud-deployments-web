@@ -6,6 +6,7 @@ use App\Enums\IntegrationProvider;
 use App\Models\UserIntegration;
 use GrahamCampbell\GitHub\Facades\GitHub;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 
@@ -16,7 +17,7 @@ class GithubIntegration extends Integration implements OauthIntegration {
 
         $params = [
             "client_id" => config("github.client_id"),
-            "scope" => "read:user,user:email",
+            "scope" => "read:user,user:email,repo",
             "redirect_uri" => route("callbacks.github", ["userId" => $encryptedUserId]),
             "state" => $state
         ];
@@ -49,14 +50,7 @@ class GithubIntegration extends Integration implements OauthIntegration {
         if ($token === null) {
             return null;
         }
-
-        return GitHub::connection([
-            'method'     => 'token',
-            'token'      => $token,
-            // 'backoff'    => false,
-            // 'cache'      => false,
-            // 'version'    => 'v3',
-            // 'enterprise' => false,
-        ]);
+        Config::set("github.connections.main.token", $token);
+        return GitHub::connection();
     }
 }

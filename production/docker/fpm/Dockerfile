@@ -7,7 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install exif gd zip pdo_mysql bcmath curl mbstring mysql tokenizer xml zip pcntl
+RUN docker-php-ext-install exif gd zip pdo_mysql bcmath curl mbstring tokenizer xml zip pcntl
 
 # Install and enable APCu extension
 RUN pecl install apcu && \

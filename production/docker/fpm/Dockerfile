@@ -3,11 +3,11 @@ FROM php:8.3-fpm AS base
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y zlib1g-dev libpng-dev libzip-dev && \
+    apt-get install -y zlib1g-dev libpng-dev libzip-dev openssl && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install exif gd zip pdo_mysql
+RUN docker-php-ext-install exif gd zip pdo_mysql bcmath curl mbstring mysql tokenizer xml zip pcntl
 
 # Install and enable APCu extension
 RUN pecl install apcu && \

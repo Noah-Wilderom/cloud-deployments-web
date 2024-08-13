@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: cloud-deployments-web
+  name: nginx-configmap
+data:
+  DOCUMENT_ROOT: "/var/www/html/public"
+  SCRIPT_FILENAME: "/var/www/html/public$fastcgi_script_name"

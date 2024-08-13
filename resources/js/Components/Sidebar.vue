@@ -96,6 +96,13 @@ const assetPath = computed(() => page.props.assetPath)
                     </SidebarItem>
 
                     <SidebarItem
+                        :route="$route('cloud::database.index')"
+                        icon="ki-abstract-14"
+                    >
+                        Database
+                    </SidebarItem>
+
+                    <SidebarItem
                         :route="$route('cloud::scripts.index')"
                         icon="ki-underlining"
                     >

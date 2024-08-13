@@ -28,7 +28,7 @@ if (page.url === "/" && props.route.replaceAll(baseUrl.value, "") === "") {
             'active here show': currentActive
         }" tabindex="0" preserve-state>
             <span class="menu-icon items-start text-gray-500 dark:text-gray-400 w-[20px]">
-                <i :class="`ki-filled ${props.icon} text-lg`"></i>
+                <i :class="`ki-duotone ${props.icon} text-lg`"></i>
             </span>
             <span class="menu-title text-sm font-semibold text-gray-700">
                 <slot/>

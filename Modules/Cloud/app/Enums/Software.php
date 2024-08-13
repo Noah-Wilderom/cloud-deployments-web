@@ -15,6 +15,7 @@ enum Software: string {
     case Nginx = 'nginx';
     case Composer = 'composer';
     case MySql = 'mysql';
+    case PostgreSQL = 'postgresql';
     case Node = 'node';
     case Php = 'php';
     case Redis = 'redis';
@@ -29,6 +30,7 @@ enum Software: string {
         return match($this) {
             self::Node => ["18", "20", "22"],
             self::Php => ["8.1", "8.2", "8.3"],
+            self::PostgreSQL => ["15", "16"],
             default => null,
         };
     }
@@ -41,6 +43,7 @@ enum Software: string {
             self::Node => 'Node',
             self::Redis => 'Redis',
             self::MySql => 'MySql',
+            self::PostgreSQL => 'PostgreSQL',
             self::Certbot => "Certbot",
             self::Composer => 'Composer',
             self::Go => "Go",
@@ -57,7 +60,7 @@ enum Software: string {
             ServerType::Webserver => [
                 self::Php,
                 self::Nginx,
-                self::MySql,
+//                self::MySql,
 //                self::Node,
 //                self::Redis,
                 self::Certbot,
@@ -66,6 +69,13 @@ enum Software: string {
                 self::Docker,
             ],
         };
+    }
+
+    public static function getDatabases(): array {
+        return [
+            self::MySql,
+            self::PostgreSQL,
+        ];
     }
 
     /**

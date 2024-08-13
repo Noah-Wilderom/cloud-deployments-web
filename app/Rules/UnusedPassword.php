@@ -27,6 +27,5 @@ readonly class UnusedPassword implements ValidationRule
             $fail("validation.unused_password")
                 ->translate();
         }
-
     }
 }

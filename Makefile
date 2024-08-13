@@ -5,4 +5,16 @@ websocket:
 lang:
 	@php artisan zora:generate
 
+build-fpm:
+	docker image build --no-cache -f production/docker/fpm/Dockerfile -t cloud-deployments:latest --target fpm .
+
+kubernetes: build-fpm
+	@kubectl apply -f ./production/kubernetes/mariadb.yaml
+	@kubectl apply -f ./production/kubernetes/redis-deployment.yaml
+	@kubectl apply -f ./production/kubernetes/redis-service.yaml
+	@kubectl apply -f ./production/kubernetes/deployment.yaml
+	@kubectl apply -f ./production/kubernetes/service.yaml
+	@kubectl apply -f ./production/kubernetes/ingress.yaml
+	@kubectl apply -f ./production/kubernetes/hpa.yaml
+
 .PHONY: lang

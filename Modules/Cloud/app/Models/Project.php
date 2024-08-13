@@ -26,6 +26,7 @@ class Project extends Model
         "sub_domain",
         "template",
         "name",
+        "ssh_user",
         "ssh_credentials_path",
         "host_ssh_credentials_path",
         "git_repository",

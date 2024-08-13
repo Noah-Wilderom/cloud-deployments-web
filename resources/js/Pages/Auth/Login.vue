@@ -19,7 +19,7 @@ const form = useForm({
 
 <template>
     <AuthLayout title="Login">
-        <form @submit.prevent="form.post($route('login'))" class="card-body flex flex-col gap-5 p-10">
+        <form @submit.prevent="form.post(route('login'))" class="card-body flex flex-col gap-5 p-10">
             <div class="flex flex-col gap-1">
                 <label class="form-label text-gray-900">
                     {{ trans("pages.auth.email") }}

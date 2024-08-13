@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-deployments
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cloud-deployments
+  template:
+    metadata:
+      labels:
+        app: cloud-deployments
+    spec:
+      volumes:
+        - name: logs
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
+        - name: testing
+          emptyDir: {}
+        - name: sessions
+          emptyDir: {}
+        - name: views
+          emptyDir: {}
+      securityContext:
+        fsGroup: 82
+      initContainers:
+        - name: database-migrations
+          image: cloud-deployments:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: cloud-deployments-configmap
+            - secretRef:
+                name: cloud-deployments-secrets
+          command:
+            - "php"
+          args:
+            - "artisan"
+            - "migrate"
+            - "--force"
+      containers:
+        - name: fpm
+          image: cloud-deployments:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9000
+          volumeMounts:
+            - name: storage
+              mountPath: /var/www/storage
+            - name: logs
+              mountPath: /var/www/html/storage/logs
+            - name: cache
+              mountPath: /var/www/html/storage/framework/cache
+            - name: sessions
+              mountPath: /var/www/html/storage/framework/sessions
+            - name: views
+              mountPath: /var/www/html/storage/framework/views
+            - name: testing
+              mountPath: /var/www/html/storage/framework/testing
+          envFrom:
+            - configMapRef:
+                name: cloud-deployments-configmap
+            - secretRef:
+                name: cloud-deployments-secrets
+          resources: {}
+        - name: horizon
+          image: cloud-deployments:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: cloud-deployments-configmap
+            - secretRef:
+                name: cloud-deployments-secrets
+          command: [ "php", "artisan", "horizon" ]
+        - name: reverb
+          image: cloud-deployments:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: cloud-deployments-configmap
+            - secretRef:
+                name: cloud-deployments-secrets
+          command: [ "php", "artisan", "reverb:start" "--host='0.0.0.0'", "--port=8080"]

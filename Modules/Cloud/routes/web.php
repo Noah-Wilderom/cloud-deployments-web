@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Cloud\Http\Controllers\BackupController;
 use Modules\Cloud\Http\Controllers\CloudController;
+use Modules\Cloud\Http\Controllers\DatabaseController;
 use Modules\Cloud\Http\Controllers\ProjectController;
 use Modules\Cloud\Http\Controllers\ScriptController;
 use Modules\Cloud\Http\Controllers\ServerController;
@@ -27,3 +28,5 @@ Route::post("/projects", [ProjectController::class, "store"])->name("projects.st
 
 Route::get("/scripts", [ScriptController::class, "index"])->name("scripts.index");
 Route::get("/backups", [BackupController::class, "index"])->name("backups.index");
+
+Route::get("/databases", [DatabaseController::class, "index"])->name("database.index");

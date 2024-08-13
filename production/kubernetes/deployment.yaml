@@ -13,6 +13,9 @@ spec:
         app: cloud-deployments
     spec:
       volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: cloud-deployments-pvc
         - name: logs
           emptyDir: {}
         - name: cache

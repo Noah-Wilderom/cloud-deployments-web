@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: cloud-deployments-web
+  name: migrate-database
+spec:
+  template:
+    spec:
+      containers:
+        - name: migrate
+          image: noahdev123/cloud-deployments:latest
+          command:
+            - "php"
+          args:
+            - "artisan"
+            - "migrate"
+            - "--force"
+          envFrom:
+            - configMapRef:
+                name: cloud-deployments-configmap
+            - secretRef:
+                name: cloud-deployments-secrets
+      restartPolicy: OnFailure

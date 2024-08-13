@@ -20,6 +20,7 @@ kubernetes:
 	@kubectl apply -f ./production/kubernetes/secret.yaml
 	@kubectl apply -f ./production/kubernetes/pvc.yaml
 	@kubectl apply -f ./production/kubernetes/deployment.yaml
+	@kubectl apply -f ./production/kubernetes/migrations.yaml
 	@kubectl apply -f ./production/kubernetes/service.yaml
 	@kubectl apply -f ./production/kubernetes/ingress.yaml
 	@kubectl apply -f ./production/kubernetes/hpa.yaml

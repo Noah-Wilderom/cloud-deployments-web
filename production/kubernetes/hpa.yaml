@@ -2,6 +2,7 @@
 kind: HorizontalPodAutoscaler
 apiVersion: autoscaling/v2
 metadata:
+  namespace: cloud-deployments-web
   name: cloud-deployments
 spec:
   scaleTargetRef:

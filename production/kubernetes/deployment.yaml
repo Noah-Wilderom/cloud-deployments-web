@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: cloud-deployments-web
   name: cloud-deployments
 spec:
   replicas: 3
@@ -28,20 +29,6 @@ spec:
           emptyDir: {}
       securityContext:
         fsGroup: 82
-      initContainers:
-        - name: database-migrations
-          image: noahdev123/cloud-deployments:latest
-          envFrom:
-            - configMapRef:
-                name: cloud-deployments-configmap
-            - secretRef:
-                name: cloud-deployments-secrets
-          command:
-            - "php"
-          args:
-            - "artisan"
-            - "migrate"
-            - "--force"
       containers:
         - name: fpm
           image: noahdev123/cloud-deployments:latest

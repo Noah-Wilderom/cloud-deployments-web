@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: cloud-deployments-web
   name: cloud-deployments-pvc
 spec:
   accessModes:

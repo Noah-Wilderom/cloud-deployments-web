@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: cloud-deployments-web
   name: mariadb
 spec:
   replicas: 1
@@ -17,7 +18,7 @@ spec:
           image: mariadb:10
           env:
             - name: MYSQL_RANDOM_ROOT_PASSWORD
-              value: "true"
+              value: true
             - name: MYSQL_USER
               value: laravel
             - name: MYSQL_PASSWORD

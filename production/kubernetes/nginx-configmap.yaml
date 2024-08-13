@@ -5,4 +5,4 @@ metadata:
   name: nginx-configmap
 data:
   DOCUMENT_ROOT: "/var/www/html/public"
-  SCRIPT_FILENAME: "/var/www/html/public$fastcgi_script_name"
+  SCRIPT_FILENAME: "/var/www/html/public/index.php$query_string"

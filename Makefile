@@ -12,6 +12,7 @@ kubernetes:
 	@kubectl apply -f ./production/kubernetes/mariadb.yaml
 	@kubectl apply -f ./production/kubernetes/redis-deployment.yaml
 	@kubectl apply -f ./production/kubernetes/redis-service.yaml
+	@kubectl apply -f ./production/kubernetes/storageclass.yaml
 	@kubectl apply -f ./production/kubernetes/pvc.yaml
 	@kubectl apply -f ./production/kubernetes/deployment.yaml
 	@kubectl apply -f ./production/kubernetes/service.yaml

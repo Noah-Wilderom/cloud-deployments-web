@@ -1,13 +1,11 @@
 apiVersion: v1
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 metadata:
-  name: cloud-deployments-pv
+  name: cloud-deployments-pvc
 spec:
-  capacity:
-    storage: 30Gi
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: "/var/www/cloud-deployments.dev/storage"
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: cloud-deployments-sc

@@ -21,6 +21,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: cloud-deployments
+                name: cloud-deployments-service
                 port:
                   number: 443

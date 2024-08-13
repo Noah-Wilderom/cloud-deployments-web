@@ -30,8 +30,7 @@ spec:
         fsGroup: 82
       initContainers:
         - name: database-migrations
-          image: cloud-deployments:latest
-          imagePullPolicy: Never
+          image: noahdev123/cloud-deployments:latest
           envFrom:
             - configMapRef:
                 name: cloud-deployments-configmap
@@ -45,8 +44,7 @@ spec:
             - "--force"
       containers:
         - name: fpm
-          image: cloud-deployments:latest
-          imagePullPolicy: Never
+          image: noahdev123/cloud-deployments:latest
           ports:
             - containerPort: 9000
           volumeMounts:
@@ -69,8 +67,7 @@ spec:
                 name: cloud-deployments-secrets
           resources: {}
         - name: horizon
-          image: cloud-deployments:latest
-          imagePullPolicy: Never
+          image: noahdev123/cloud-deployments:latest
           envFrom:
             - configMapRef:
                 name: cloud-deployments-configmap
@@ -78,8 +75,7 @@ spec:
                 name: cloud-deployments-secrets
           command: [ "php", "artisan", "horizon" ]
         - name: reverb
-          image: cloud-deployments:latest
-          imagePullPolicy: Never
+          image: noahdev123/cloud-deployments:latest
           envFrom:
             - configMapRef:
                 name: cloud-deployments-configmap

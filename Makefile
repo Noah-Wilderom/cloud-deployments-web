@@ -5,8 +5,11 @@ websocket:
 lang:
 	@php artisan zora:generate
 
+docker-push: build-fpm
+	@docker push noahdev123/cloud-deployments
+
 build-fpm:
-	docker image build --no-cache -f production/docker/fpm/Dockerfile -t cloud-deployments:latest --target fpm .
+	@docker image build --no-cache -f production/docker/fpm/Dockerfile -t noahdev123/cloud-deployments:latest --target fpm .
 
 kubernetes:
 	@kubectl apply -f ./production/kubernetes/mariadb.yaml

@@ -3,7 +3,7 @@ FROM php:8.3-fpm AS base
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y zlib1g-dev libxml-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libcurl4-openssl-dev libzip-dev openssl zip unzip build-essential curl  && \
+    apt-get install -y zlib1g-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libcurl4-openssl-dev libzip-dev openssl zip unzip build-essential curl  && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions

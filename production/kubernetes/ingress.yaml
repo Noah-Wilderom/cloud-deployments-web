@@ -8,7 +8,21 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
     nginx.ingress.kubernetes.io/backend-protocol: "FCGI"
     nginx.ingress.kubernetes.io/fastcgi-index: "index.php"
-    nginx.ingress.kubernetes.io/fastcgi-params-configmap: "nginx-configmap"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      root /var/www/html/public;
+
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-Content-Type-Options "nosniff";
+
+      error_page 404 /index.php;
+
+      location ~ \.php$ {
+          fastcgi_pass   cloud-deployments-service:9000;
+          fastcgi_index  index.php;
+          fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+          include        fastcgi_params;
+          fastcgi_hide_header X-Powered-By;
+      }
 spec:
   ingressClassName: nginx
   tls:

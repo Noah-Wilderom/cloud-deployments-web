@@ -9,6 +9,8 @@ RUN apt-get update && \
 # Install PHP extensions
 RUN docker-php-ext-install exif gd zip pdo_mysql bcmath curl mbstring zip pcntl
 
+RUN pecl install redis && docker-php-ext-enable redis
+
 # Install and enable APCu extension
 RUN pecl install apcu && \
     docker-php-ext-enable apcu

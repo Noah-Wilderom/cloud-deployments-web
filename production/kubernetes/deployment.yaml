@@ -68,4 +68,4 @@ spec:
                 name: cloud-deployments-configmap
             - secretRef:
                 name: cloud-deployments-secrets
-          command: [ "php", "artisan", "reverb:start", "--host='0.0.0.0'", "--port=8080" ]
+          command: [ "php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080" ]

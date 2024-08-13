@@ -19,6 +19,7 @@ kubernetes:
 	@kubectl apply -f ./production/kubernetes/storageclass.yaml
 	@kubectl apply -f ./production/kubernetes/configmap.yaml
 	@kubectl apply -f ./production/kubernetes/secret.yaml
+	@kubectl apply -f ./production/kubernetes/pv.yaml
 	@kubectl apply -f ./production/kubernetes/pvc.yaml
 	@kubectl apply -f ./production/kubernetes/deployment.yaml
 	@kubectl apply -f ./production/kubernetes/migrations.yaml

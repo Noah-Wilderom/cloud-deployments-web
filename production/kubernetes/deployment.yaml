@@ -13,7 +13,7 @@ spec:
         app: cloud-deployments
     spec:
       volumes:
-        - name: storage
+        - name: app-storage
           persistentVolumeClaim:
             claimName: cloud-deployments-pvc
         - name: logs
@@ -50,8 +50,8 @@ spec:
           ports:
             - containerPort: 9000
           volumeMounts:
-            - name: storage
-              mountPath: /var/www/storage
+            - name: app-storage
+              mountPath: /var/www/html/storage
             - name: logs
               mountPath: /var/www/html/storage/logs
             - name: cache

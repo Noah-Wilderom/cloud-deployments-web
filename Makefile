@@ -12,6 +12,7 @@ build-fpm:
 	@docker image build --no-cache -f production/docker/fpm/Dockerfile -t noahdev123/cloud-deployments:latest --target fpm .
 
 kubernetes:
+	@kubectl apply -f ./production/kubernetes/namespace.yaml
 	@kubectl apply -f ./production/kubernetes/mariadb.yaml
 	@kubectl apply -f ./production/kubernetes/redis-deployment.yaml
 	@kubectl apply -f ./production/kubernetes/redis-service.yaml

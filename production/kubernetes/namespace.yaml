@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cloud-deployments-web
+  labels:
+    name: cloud-deployments-web

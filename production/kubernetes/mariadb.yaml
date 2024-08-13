@@ -32,6 +32,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: cloud-deployments-web
   name: mariadb
 spec:
   selector:

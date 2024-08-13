@@ -4,5 +4,4 @@ metadata:
   namespace: cloud-deployments-web
   name: nginx-configmap
 data:
-  DOCUMENT_ROOT: "/var/www/html/public"
-  SCRIPT_FILENAME: "/var/www/html/public/index.php$query_string"
+  SCRIPT_FILENAME: "/var/www/html/public/index.php"

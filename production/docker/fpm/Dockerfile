@@ -60,3 +60,4 @@ COPY --from=build-fpm /var/www/html /var/www/html
 
 # Expose port 9000 for PHP-FPM
 EXPOSE 9000
+CMD [ "php-fpm" ]

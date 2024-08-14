@@ -5,28 +5,9 @@ metadata:
   name: cloud-deployments-ingress
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
-    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    nginx.ingress.kubernetes.io/backend-protocol: "FCGI"
-    nginx.ingress.kubernetes.io/fastcgi-index: "index.php"
-    nginx.ingress.kubernetes.io/server-snippet: |
-      root /var/www/html/public;
-
-      location / {
-        try_files $uri $uri/ /index.php?$query_string;
-      }
-
-      add_header X-Frame-Options "SAMEORIGIN";
-      add_header X-Content-Type-Options "nosniff";
-
-      error_page 404 /index.php;
-
-      location ~ \.php$ {
-          fastcgi_pass   cloud-deployments-service:9000;
-          fastcgi_index  index.php;
-          fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-          include        fastcgi_params;
-          fastcgi_hide_header X-Powered-By;
-      }
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
   ingressClassName: nginx
   tls:
@@ -43,4 +24,4 @@ spec:
               service:
                 name: cloud-deployments-service
                 port:
-                  number: 9000
+                  number: 80

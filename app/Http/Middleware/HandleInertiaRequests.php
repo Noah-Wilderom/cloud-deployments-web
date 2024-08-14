@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             "appName" => config("app.name"),
-            "assetPath" => asset("assets/"),
+            "assetPath" => asset("assets/", str_contains(config("app.url"), "https://")),
             "baseUrl" => config("app.url"),
             'auth.user' => fn () => $request->user()
                 ? $request->user()

@@ -28,6 +28,7 @@ kubernetes:
 	@kubectl apply -f ./production/kubernetes/deployment.yaml
 	@kubectl apply -f ./production/kubernetes/migrations.yaml
 	@kubectl apply -f ./production/kubernetes/service.yaml
+	@kubectl apply -f ./production/kubernetes/fpm-service.yaml
 	@kubectl apply -f ./production/kubernetes/ingress.yaml
 	@kubectl apply -f ./production/kubernetes/hpa.yaml
 

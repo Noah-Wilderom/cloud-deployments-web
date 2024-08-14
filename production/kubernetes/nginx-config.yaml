@@ -8,7 +8,7 @@ data:
     server {
         listen  80;
         listen [::]:80;
-        root /var/www/html/public;
+        root /var/www/html;
 
         add_header X-Frame-Options "SAMEORIGIN";
         add_header X-Content-Type-Options "nosniff";

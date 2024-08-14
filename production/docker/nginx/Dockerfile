@@ -7,6 +7,6 @@ COPY . /var/www/html/
 RUN npm ci
 RUN npm run build
 
-FROM nginx:1.25.2-alpine AS nginx
+FROM nginx:alpine AS nginx
 
 COPY --from=assets-build /var/www/html/public /var/www/html/

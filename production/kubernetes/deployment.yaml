@@ -4,7 +4,7 @@ metadata:
   namespace: cloud-deployments-web
   name: cloud-deployments
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: cloud-deployments

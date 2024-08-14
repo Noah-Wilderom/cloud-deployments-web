@@ -22,6 +22,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: cloud-deployments-fpm-service
+                name: cloud-deployments-nginx
                 port:
                   number: 80

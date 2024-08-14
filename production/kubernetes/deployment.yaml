@@ -69,3 +69,11 @@ spec:
             - secretRef:
                 name: cloud-deployments-secrets
           command: [ "php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080" ]
+        - name: nginx
+          image: noahdev123/cloud-deployments-nginx:latest
+          resources:
+            limits:
+              cpu: 750m
+              memory: 250M
+          ports:
+            - containerPort: 80

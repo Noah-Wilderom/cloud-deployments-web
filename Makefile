@@ -5,11 +5,15 @@ websocket:
 lang:
 	@php artisan zora:generate
 
-docker-push: build-fpm
-	@docker push noahdev123/cloud-deployments
+docker-push: build-fpm build-nginx
+	@docker push noahdev123/cloud-deployments:latest
+	@docker push noahdev123/cloud-deployments-nginx:latest
 
 build-fpm:
 	@docker image build --no-cache -f production/docker/fpm/Dockerfile -t noahdev123/cloud-deployments:latest --target fpm .
+
+build-nginx:
+	@docker image build --no-cache -f production/docker/nginx/Dockerfile -t noahdev123/cloud-deployments-nginx:latest --target nginx .
 
 kubernetes:
 	@kubectl apply -f ./production/kubernetes/namespace.yaml
@@ -27,6 +31,6 @@ kubernetes:
 	@kubectl apply -f ./production/kubernetes/ingress.yaml
 	@kubectl apply -f ./production/kubernetes/hpa.yaml
 
-deploy: build-fpm kubernetes
+deploy: build-fpm build-nginx kubernetes
 
 .PHONY: lang

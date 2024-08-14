@@ -58,6 +58,4 @@ COPY --from=build-fpm /var/www/html /var/www/html
 # Copy custom PHP-FPM configuration
 # COPY ./production/docker/fpm/custom-www.conf /usr/local/etc/php-fpm.d/www.conf
 
-# Expose port 9000 for PHP-FPM
-EXPOSE 9000
 CMD [ "php-fpm" ]

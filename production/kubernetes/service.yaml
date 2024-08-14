@@ -2,12 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: cloud-deployments-web
-  name: cloud-deployments-nginx
+  name: cloud-deployments-nginx-service
   labels:
     app: cloud-deployments-nginx
 spec:
   selector:
-    app: cloud-deployments-nginx
+    app: cloud-deployments
   ports:
     - protocol: TCP
       port: 80

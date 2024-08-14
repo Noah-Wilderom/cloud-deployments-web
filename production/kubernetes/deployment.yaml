@@ -32,6 +32,13 @@ spec:
       containers:
         - name: fpm
           image: noahdev123/cloud-deployments:latest
+          resources:
+            requests:
+              cpu: 250m
+              memory: 128M
+            limits:
+              cpu: 500m
+              memory: 256M
           ports:
             - containerPort: 9000
           volumeMounts:
@@ -52,9 +59,15 @@ spec:
                 name: cloud-deployments-configmap
             - secretRef:
                 name: cloud-deployments-secrets
-          resources: {}
         - name: horizon
           image: noahdev123/cloud-deployments:latest
+          resources:
+            requests:
+              cpu: 200m
+              memory: 128M
+            limits:
+              cpu: 400m
+              memory: 256M
           envFrom:
             - configMapRef:
                 name: cloud-deployments-configmap
@@ -63,6 +76,13 @@ spec:
           command: [ "php", "artisan", "horizon" ]
         - name: reverb
           image: noahdev123/cloud-deployments:latest
+          resources:
+            requests:
+              cpu: 200m
+              memory: 128M
+            limits:
+              cpu: 400m
+              memory: 256M
           envFrom:
             - configMapRef:
                 name: cloud-deployments-configmap
@@ -72,8 +92,11 @@ spec:
         - name: nginx
           image: noahdev123/cloud-deployments-nginx:latest
           resources:
+            requests:
+              cpu: 250m
+              memory: 128M
             limits:
-              cpu: 750m
-              memory: 250M
+              cpu: 500m
+              memory: 256M
           ports:
             - containerPort: 80

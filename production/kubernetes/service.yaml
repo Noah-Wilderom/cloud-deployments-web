@@ -4,7 +4,7 @@ metadata:
   namespace: cloud-deployments-web
   name: cloud-deployments-service
   labels:
-    app: cloud-deployments
+    app: cloud-deployments-nginx
 spec:
   selector:
     app: cloud-deployments-nginx

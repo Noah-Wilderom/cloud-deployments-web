@@ -9,6 +9,7 @@ data:
   APP_DEBUG: "true"
   APP_TIMEZONE: "Europe/Amsterdam"
   APP_URL: "https://cloud-deployments.dev"
+  ASSET_URL: "https://cloud-deployments.dev"
   APP_VERSION: "v2.1.1-dev"
 
   APP_LOCALE: "nl"

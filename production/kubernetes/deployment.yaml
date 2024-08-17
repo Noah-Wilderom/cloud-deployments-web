@@ -20,9 +20,8 @@ spec:
         - name: app-storage
           persistentVolumeClaim:
             claimName: cloud-deployments-pvc-storage
-        - name: app-public
-          persistentVolumeClaim:
-            claimName: cloud-deployments-pvc-public
+        - name: shared-public
+          emptyDir: {}
         - name: logs
           emptyDir: {}
         - name: cache
@@ -50,7 +49,7 @@ spec:
           volumeMounts:
             - name: app-storage
               mountPath: /var/www/html/storage
-            - name: app-public
+            - name: shared-public
               mountPath: /var/www/html/public
             - name: logs
               mountPath: /var/www/html/storage/logs
@@ -104,7 +103,7 @@ spec:
               mountPath: /etc/nginx/conf.d/default.conf
               subPath: default.conf
               readOnly: false
-            - name: app-public
+            - name: shared-public
               mountPath: /var/www/html/public
 
           resources:

@@ -37,7 +37,7 @@ spec:
       initContainers:
         - name: copy-build-files
           image: noahdev123/cloud-deployments:latest
-          command: ["/bin/sh", "-c", "cp -r /var/www/html/public/* /shared-public/"]
+          command: ["/bin/sh", "-c", "cp -r /var/www/html/public/build/* /shared-public/"]
           volumeMounts:
             - name: shared-public
               mountPath: /shared-public

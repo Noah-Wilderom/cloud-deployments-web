@@ -13,7 +13,7 @@ spec:
             - "php"
           args:
             - "artisan"
-            - "migrate"
+            - "migrate:fresh"
             - "--seed"
             - "--force"
           envFrom:

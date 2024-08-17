@@ -50,7 +50,7 @@ spec:
             - name: app-storage
               mountPath: /var/www/html/storage
             - name: shared-public
-              mountPath: /var/www/html/public
+              mountPath: /var/www/html/public/build
             - name: logs
               mountPath: /var/www/html/storage/logs
             - name: cache
@@ -104,8 +104,7 @@ spec:
               subPath: default.conf
               readOnly: false
             - name: shared-public
-              mountPath: /var/www/html/public
-
+              mountPath: /var/www/html/public/build
           resources:
             requests:
               cpu: 250m

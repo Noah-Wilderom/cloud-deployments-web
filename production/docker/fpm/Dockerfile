@@ -53,6 +53,9 @@ RUN composer dump-autoload -o
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
+
+COPY package.json package-lock.json /var/www/html/
+
 # Install dependencies and build assets
 RUN npm ci
 RUN npm run build
@@ -62,7 +65,6 @@ FROM base AS fpm
 
 # Copy application files from the build-fpm stage
 COPY --from=build-fpm /var/www/html /var/www/html
-COPY --from=assets-build /var/www/html/public/build /var/www/html/public/build
 
 # Copy custom PHP-FPM configuration
 # COPY ./production/docker/fpm/custom-www.conf /usr/local/etc/php-fpm.d/www.conf

@@ -23,5 +23,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /var/www/cloud-deployments.dev/public
+    path: /mnt/cloud-deployments.dev/assets
   storageClassName: cloud-deployments-sc

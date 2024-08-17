@@ -56,7 +56,7 @@ COPY --from=build-fpm /var/www/html /var/www/html
 WORKDIR /var/www/html
 
 RUN npm ci
-RUN npm build
+RUN npm run build
 
 # Stage 4: Final stage for running the application
 FROM base AS fpm

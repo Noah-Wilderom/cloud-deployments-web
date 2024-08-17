@@ -4,13 +4,13 @@ metadata:
   namespace: cloud-deployments-web
   name: cloud-deployments-configmap
 data:
-  APP_NAME: "Cloud Deployments"
-  APP_ENV: "local"
+  APP_NAME: "Cloud Deployments Kubernetes"
+  APP_ENV: "production"
   APP_DEBUG: "true"
   APP_TIMEZONE: "Europe/Amsterdam"
   APP_URL: "https://cloud-deployments.dev"
   ASSET_URL: "https://cloud-deployments.dev"
-  APP_VERSION: "v2.1.1-dev"
+  APP_VERSION: "v2.2.1-dev"
 
   APP_LOCALE: "nl"
   APP_FALLBACK_LOCALE: "en"
@@ -49,11 +49,12 @@ data:
   REDIS_PASSWORD: null
   REDIS_PORT: "6379"
 
+  POSTMARK_TOKEN: "f7d85d1f-aa24-447a-a679-742f06ad7792"
   MAIL_MAILER: "smtp"
-  MAIL_HOST: "localhost"
-  MAIL_PORT: "1025"
-  MAIL_USERNAME: null
-  MAIL_PASSWORD: null
+  MAIL_HOST: "smtp.postmarkapp.com"
+  MAIL_PORT: "2525"
+  MAIL_USERNAME: "${POSTMARK_TOKEN}"
+  MAIL_PASSWORD: "${POSTMARK_TOKEN}"
   MAIL_ENCRYPTION: "tls"
   MAIL_FROM_ADDRESS: "no-reply@cloud-deployments.dev"
   MAIL_FROM_NAME: "${APP_NAME}"
@@ -62,7 +63,7 @@ data:
 
   REVERB_APP_ID: "715092"
   REVERB_APP_KEY: "hrpywjpgovxelracwt2v"
-  REVERB_HOST: "127.0.0.1"
+  REVERB_HOST: "https://cloud-deployments.dev"
   REVERB_PORT: "8080"
   REVERB_SCHEME: "http"
 

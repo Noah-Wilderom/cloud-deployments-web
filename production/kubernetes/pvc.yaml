@@ -10,16 +10,3 @@ spec:
     requests:
       storage: 30Gi
   storageClassName: cloud-deployments-sc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: cloud-deployments-web
-  name: cloud-deployments-pvc-public
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 30Gi
-  storageClassName: cloud-deployments-sc

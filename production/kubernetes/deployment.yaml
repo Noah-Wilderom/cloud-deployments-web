@@ -37,7 +37,7 @@ spec:
       initContainers:
         - name: copy-build-files
           image: noahdev123/cloud-deployments:latest
-          command: ["/bin/sh", "-c", "cp -r /var/www/html/public/build/* /shared-public/"]
+          command: ["/bin/sh", "-c", "cp -r /var/www/html/public/* /shared-public/"]
           volumeMounts:
             - name: shared-public
               mountPath: /shared-public
@@ -57,7 +57,7 @@ spec:
             - name: app-storage
               mountPath: /var/www/html/storage
             - name: shared-public
-              mountPath: /var/www/html/public/build
+              mountPath: /var/www/html/public
             - name: logs
               mountPath: /var/www/html/storage/logs
             - name: cache
@@ -111,7 +111,7 @@ spec:
               subPath: default.conf
               readOnly: false
             - name: shared-public
-              mountPath: /var/www/html/public/build
+              mountPath: /var/www/html/public
           resources:
             requests:
               cpu: 250m

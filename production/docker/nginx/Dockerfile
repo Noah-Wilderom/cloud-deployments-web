@@ -1,12 +1,12 @@
-FROM node:20-alpine AS assets-build
+# FROM node:20-alpine AS assets-build
 
-WORKDIR /var/www/html
+# WORKDIR /var/www/html
 
-COPY . .
+# COPY . .
 
-RUN npm ci
-RUN npm run build
+# RUN npm ci
+# RUN npm run build
 
 FROM nginx:alpine AS nginx
 
-COPY --from=assets-build /var/www/html/public var/www/html/
+# COPY --from=assets-build /var/www/html/public /var/www/html/public

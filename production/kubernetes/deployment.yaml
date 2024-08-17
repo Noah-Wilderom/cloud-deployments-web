@@ -34,6 +34,13 @@ spec:
           emptyDir: {}
       securityContext:
         fsGroup: 82
+      initContainers:
+        - name: copy-build-files
+          image: noahdev123/cloud-deployments:latest
+          command: ["/bin/sh", "-c", "cp -r /var/www/html/public/* /shared-public/"]
+          volumeMounts:
+            - name: shared-public
+              mountPath: /shared-public
       containers:
         - name: fpm
           image: noahdev123/cloud-deployments:latest

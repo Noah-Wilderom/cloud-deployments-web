@@ -36,6 +36,7 @@ COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 # Copy application files and install dependencies
 COPY composer.json composer.lock /var/www/html/
+COPY .env.production /var/www/html/.env
 RUN composer install --prefer-dist --no-ansi --no-dev --no-autoloader
 COPY artisan /var/www/html/artisan
 COPY bootstrap /var/www/html/bootstrap

@@ -9,4 +9,4 @@ RUN npm run build
 
 FROM nginx:alpine AS nginx
 
-COPY --from=assets-build /var/www/html var/www/html/
+COPY --from=assets-build /var/www/html/public var/www/html/

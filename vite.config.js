@@ -11,9 +11,9 @@ async function getConfig() {
     const allPaths = await collectModuleAssetsPaths(paths, 'Modules');
 
     return defineConfig({
-        server: {
-            https: true,
-        },
+        // server: {
+        //     https: true,
+        // },
         plugins: [
             vue({
                 template: {

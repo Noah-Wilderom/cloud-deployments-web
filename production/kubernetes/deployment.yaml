@@ -75,13 +75,6 @@ spec:
                 name: cloud-deployments-secrets
         - name: horizon
           image: noahdev123/cloud-deployments:latest
-          resources:
-            requests:
-              cpu: 200m
-              memory: 128M
-            limits:
-              cpu: 400m
-              memory: 256M
           envFrom:
             - configMapRef:
                 name: cloud-deployments-configmap

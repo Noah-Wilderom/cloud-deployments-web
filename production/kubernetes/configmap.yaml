@@ -53,11 +53,11 @@ data:
   MAIL_MAILER: "smtp"
   MAIL_HOST: "smtp.postmarkapp.com"
   MAIL_PORT: "587"
-  MAIL_USERNAME: "${POSTMARK_TOKEN}"
-  MAIL_PASSWORD: "${POSTMARK_TOKEN}"
+  MAIL_USERNAME: "f7d85d1f-aa24-447a-a679-742f06ad7792"
+  MAIL_PASSWORD: "f7d85d1f-aa24-447a-a679-742f06ad7792"
   MAIL_ENCRYPTION: "tls"
   MAIL_FROM_ADDRESS: "no-reply@cloud-deployments.dev"
-  MAIL_FROM_NAME: "${APP_NAME}"
+  MAIL_FROM_NAME: "Cloud Deployments"
 
   VITE_APP_NAME: "${APP_NAME}"
 

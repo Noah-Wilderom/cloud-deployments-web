@@ -63,7 +63,7 @@ data:
 
   REVERB_APP_ID: "715092"
   REVERB_APP_KEY: "hrpywjpgovxelracwt2v"
-  REVERB_HOST: "https://cloud-deployments.dev"
+  REVERB_HOST: "cloud-deployments.dev"
   REVERB_PORT: "8080"
   REVERB_SCHEME: "https"
 

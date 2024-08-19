@@ -5,9 +5,13 @@ namespace App\Providers;
 use App\Listeners\UserEventSubscriber;
 use App\Models\Role;
 use App\Services\Version;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
@@ -47,7 +51,4 @@ class AppServiceProvider extends ServiceProvider
             URL::forceRootUrl(config("app.url"));
         }
     }
-
-
-
 }

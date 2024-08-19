@@ -25,12 +25,12 @@ data:
   LOG_DEPRECATIONS_CHANNEL: "null"
   LOG_LEVEL: "debug"
 
-  DB_CONNECTION: "mysql"
-  DB_HOST: "mariadb"
-  DB_PORT: "3306"
-  DB_DATABASE: "laravel"
-  DB_USERNAME: "laravel"
-  DB_PASSWORD: "laravel"
+  DB_CONNECTION: "pgsql"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_DATABASE: "cloud_deployments"
+  DB_USERNAME: "cloud_deployments"
+  DB_PASSWORD: "password"
 
   SESSION_DRIVER: "database"
   SESSION_LIFETIME: "720"

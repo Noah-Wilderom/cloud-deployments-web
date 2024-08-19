@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-secret
+  namespace: cloud-deployments-web
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: "cloud_deployments"
+  POSTGRES_USER: "cloud_deployments"
+  POSTGRES_PASSWORD: "password"

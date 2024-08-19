@@ -17,7 +17,12 @@ build-nginx:
 
 kubernetes:
 	@kubectl apply -f ./production/kubernetes/namespace.yaml
-	@kubectl apply -f ./production/kubernetes/mariadb.yaml
+	#@kubectl apply -f ./production/kubernetes/mariadb.yaml
+	@kubectl apply -f ./production/kubernetes/postgres-configmap.yaml
+	@kubectl apply -f ./production/kubernetes/postgres-pv.yaml
+	@kubectl apply -f ./production/kubernetes/postgres-pvc.yaml
+	@kubectl apply -f ./production/kubernetes/postgres-deployment.yaml
+
 	@kubectl apply -f ./production/kubernetes/redis-deployment.yaml
 	@kubectl apply -f ./production/kubernetes/redis-service.yaml
 	@kubectl apply -f ./production/kubernetes/storageclass.yaml

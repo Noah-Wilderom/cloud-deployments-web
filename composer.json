@@ -21,6 +21,7 @@
         "nubs/random-name-generator": "^2.2",
         "nwidart/laravel-modules": "^11.0",
         "phpseclib/phpseclib": "^3.0",
+        "renoki-co/php-k8s": "dev-master",
         "spatie/docker": "^1.13",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-backup": "^9.0",
@@ -94,6 +95,6 @@
             "wikimedia/composer-merge-plugin": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string("sub_domain")->nullable();
             $table->string("template");
             $table->string("name");
-            $table->string("ssh_credentials_path");
-            $table->string("host_ssh_credentials_path");
+            $table->text("ssh_credentials_path");
+            $table->text("host_ssh_credentials_path");
             $table->text("git_repository");
             $table->timestamps();
         });

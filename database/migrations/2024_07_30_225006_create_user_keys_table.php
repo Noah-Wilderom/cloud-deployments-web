@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->boolean("primary")->default(false);
             $table->string("name");
-            $table->string("path");
+            $table->text("path");
             $table->string("signature")->nullable();
             $table->timestamp("last_used_at")->nullable();
             $table->timestamps();

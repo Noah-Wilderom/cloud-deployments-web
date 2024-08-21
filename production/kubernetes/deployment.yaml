@@ -81,6 +81,14 @@ spec:
             - secretRef:
                 name: cloud-deployments-secrets
           command: [ "php", "artisan", "horizon" ]
+        - name: scheduler
+          image: noahdev123/cloud-deployments:latest
+          envFrom:
+            - configMapRef:
+                name: cloud-deployments-configmap
+            - secretRef:
+                name: cloud-deployments-secrets
+          command: [ "php", "artisan", "schedule:work" ]
         - name: reverb
           image: noahdev123/cloud-deployments:latest
           resources:

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->string("provider");
             $table->text("data");
-            $table->string("token");
+            $table->text("token");
             $table->timestamps();
         });
     }

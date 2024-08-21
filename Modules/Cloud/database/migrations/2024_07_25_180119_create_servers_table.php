@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string("status");
             $table->string("name");
             $table->text("cloud_provider");
-            $table->string("ssh_credentials_path");
+            $table->text("ssh_credentials_path");
             $table->text("host");
             $table->timestamps();
         });

@@ -3,11 +3,11 @@ FROM php:8.3-fpm AS base
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y zlib1g-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libcurl4-openssl-dev libzip-dev openssl zip unzip build-essential curl  && \
+    apt-get install -y zlib1g-dev libonig-dev libpng-dev libjpeg-dev libfreetype6-dev libcurl4-openssl-dev libzip-dev openssl zip unzip build-essential curl libpq-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install exif gd zip pdo_mysql bcmath curl mbstring zip pcntl
+RUN docker-php-ext-install exif gd zip pdo_mysql bcmath curl mbstring zip pcntl pdo_pgsql
 
 RUN pecl install redis && docker-php-ext-enable redis
 

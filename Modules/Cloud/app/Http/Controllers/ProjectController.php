@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Inertia\Response as InertiaResponse;
 use Modules\Cloud\Data\GitRepositoryData;
+use Modules\Cloud\Data\ProjectSettings;
+use Modules\Cloud\Enums\ProjectEnvironment;
 use Modules\Cloud\Enums\ProjectTemplate;
 use Modules\Cloud\Http\Requests\StoreProjectRequest;
 use Modules\Cloud\Models\Project;
@@ -82,6 +84,8 @@ class ProjectController extends Controller
             "ssh_credentials_path" => $sshCredentialsDir,
             "host_ssh_credentials_path" => $hostSshCredentialsDir,
             "git_repository" => $gitRepository,
+            "environments" => ProjectEnvironment::defaultEnvironments(),
+            "settings" => new ProjectSettings(),
         ]);
 
         return back()

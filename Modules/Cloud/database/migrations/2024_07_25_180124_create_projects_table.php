@@ -24,6 +24,8 @@ return new class extends Migration
             $table->text("ssh_credentials_path");
             $table->text("host_ssh_credentials_path");
             $table->text("git_repository");
+            $table->text("settings");
+            $table->text("environments");
             $table->timestamps();
         });
     }

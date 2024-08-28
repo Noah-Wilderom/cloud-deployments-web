@@ -4,11 +4,14 @@ namespace Modules\Cloud\Models;
 
 use App\Models\Traits\HasUuidV7;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Cloud\Data\GitRepositoryData;
+use Modules\Cloud\Data\ProjectSettings;
+use Modules\Cloud\Enums\ProjectEnvironment;
 use Modules\Cloud\Enums\ProjectTemplate;
 use Modules\Services\Models\Customer;
 use Modules\Services\Models\Domain;
@@ -30,12 +33,16 @@ class Project extends Model
         "ssh_credentials_path",
         "host_ssh_credentials_path",
         "git_repository",
+        "environments",
+        "settings",
     ];
 
     protected $casts = [
         "initialized" => "boolean",
         "template" => ProjectTemplate::class,
         "git_repository" => GitRepositoryData::class,
+        "environments" => AsEnumCollection::class . ":" . ProjectEnvironment::class,
+        "settings" => ProjectSettings::class,
     ];
 
     public function user(): BelongsTo {

@@ -46,7 +46,12 @@ abstract class Task {
 
     public function asProjectUser(Project $project): self {
         $this->project = $project;
-        $this->user = $this->project->name;
+        $this->user = $this->project->ssh_user;
+        return $this;
+    }
+
+    public function setProject(Project $project): self {
+        $this->project = $project;
         return $this;
     }
 

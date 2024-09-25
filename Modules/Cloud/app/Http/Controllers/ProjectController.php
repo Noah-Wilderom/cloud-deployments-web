@@ -9,12 +9,15 @@ use GrahamCampbell\GitHub\GitHubManager;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Inertia\Response as InertiaResponse;
 use Modules\Cloud\Data\GitRepositoryData;
 use Modules\Cloud\Data\ProjectSettings;
 use Modules\Cloud\Enums\ProjectEnvironment;
 use Modules\Cloud\Enums\ProjectTemplate;
 use Modules\Cloud\Http\Requests\StoreProjectRequest;
+use Modules\Cloud\Jobs\ProvisionProject;
+use Modules\Cloud\Jobs\ProvisionServer;
 use Modules\Cloud\Models\Project;
 use Modules\Cloud\Models\Server;
 use Modules\Services\Models\Customer;
@@ -45,6 +48,12 @@ class ProjectController extends Controller
             "templates" => ProjectTemplate::getAllByDisplayName(),
             "repositories" => $repositories,
             "randomName" => generate_random_name(),
+        ]);
+    }
+
+    public function show(Project $project): InertiaResponse {
+        return inertia("Projects/Show", [
+            "project" => $project,
         ]);
     }
 
@@ -81,12 +90,15 @@ class ProjectController extends Controller
             "sub_domain" => $request->get("sub_domain"),
             "template" => $request->get("template"),
             "name" => $request->get("name"),
+            "ssh_user" => Project::generateProjectName($request->get("name")),
             "ssh_credentials_path" => $sshCredentialsDir,
             "host_ssh_credentials_path" => $hostSshCredentialsDir,
             "git_repository" => $gitRepository,
             "environments" => ProjectEnvironment::defaultEnvironments(),
             "settings" => new ProjectSettings(),
         ]);
+
+        ProvisionProject::dispatch($project);
 
         return back()
             ->with("notifications", [

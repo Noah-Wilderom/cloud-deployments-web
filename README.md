@@ -1,47 +1,109 @@
-<p align="center"><a href="https://mailweb.nl" target="_blank"><img src="https://git.thewebbakery.nl/uploads/-/system/group/avatar/299/mailweb-logo-2021.png" width="400" alt="Mailweb logo"></a></p>
+# Cloud Deployments
+This is a personal project which i have made many times before, in other languages and in CLI.  
+This project is inspired by other softwares like Plesk, Coolify, Vercel, Ploi etc.
 
-<p align="center">
-<a href="https://git.thewebbakery.nl/mailweb/mailweb-new/-/commits/master"><img src="https://git.thewebbakery.nl/mailweb-v2/mailweb-backoffice/badges/master/pipeline.svg" alt="Build Status"></a>
-</p>
+## Tech Stack
+- PHP 8.3
+- Laravel 11
+- Websockets (Laravel Reverb)
+- Shell scripts
+- Vue (Inertia) for the front-end
+- Laravel Modules for the structure
+- [Metronic 9](https://keenthemes.com/metronic/) for the dashboard
+- Kubernetes (production folder)
 
-## Packages
+## Installation
 
-### Third party packages
-- [Modules](https://laravelmodules.com/docs/v11/introduction).
-- [Backup](https://spatie.be/docs/laravel-backup/v8/introduction)
-- [Permissions & Roles?](https://spatie.be/docs/laravel-permission/v6/introduction).
-- [Data?](https://spatie.be/docs/laravel-data/v4/introduction).
+### Kubernetes
+1. Clone the project
+2. Install dependencies `composer install && npm i`
+3. Copy the .env.example and adjust the needed settings `cp .env.example .env`
+4. Run the deploy command `make deploy`
+ 
+### Local
+1. Clone the project
+2. Install dependencies `composer install && npm i`
+3. Copy the .env.example and adjust the needed settings `cp .env.example .env`
+4. Start the webserver `php artisan serve`
+5. Build the assets `npm run dev`
+6. Start the queue `php artisan horizon`
+7. Start the scheduler `php artisan schedule:work`
+8. Start the websockets `make websocket`
 
-### First party packages
-- [Laravel Websockets (Realtime)](https://laravel.com/docs/11.x/reverb)
-- [Laravel Telescope (Logs)][https://laravel.com/docs/11.x/telescope]
-- [Fortify?](https://laravel.com/docs/11.x/fortify).
+## Features  
 
-### Asset search and replace
-- Search: `src="assets\/([^"]*)"`
-- Replace: `:src="assetPath + '/$1'"`
+### Auth  (app/Http/Controllers/Auth)
 
+- [x] Login
+  - [x] Obligated 2FA
+  - [x] Obligated password change
+- [ ] Register
 
-<p align="center"><a href="https://mailweb.nl" target="_blank"><img src="https://git.thewebbakery.nl/uploads/-/system/group/avatar/299/mailweb-logo-2021.png" width="400" alt="Mailweb logo"></a></p>
+### Services (Modules/Services)
+- [ ] Customers
+  - [x] Create new customer
+  - [ ] Update customers
 
-<p align="center">
-<a href="https://git.thewebbakery.nl/mailweb/mailweb-new/-/commits/master"><img src="https://git.thewebbakery.nl/mailweb-v2/mailweb-api/badges/master/pipeline.svg" alt="Build Status"></a>
-</p>
+- [ ] Domains
+  - [x] Create new domain
+  - [x] Use the Cloudflare integration
+  - [ ] Update domains
+  - [ ] DNS check if domain is pointed to one of the servers
+- [ ] Service Plans
+  - [x] Create new service plan
+  - [ ] Update service plans
+- [ ] Subscriptions
+  - [x] Create new subscription using service plans
+  - [ ] Update subscriptions
+  - [ ] Generate automatic invoices
+  - [ ] Accept payments with Stripe
+  - [ ] Payout with Stripe 
 
-## Packages
+### Teams
+- [ ] Create teams
+- [ ] Update teams
+- [ ] Manage users in teams
 
-### Third party packages
-- [Modules](https://laravelmodules.com/docs/v11/introduction).
-- [Backup](https://spatie.be/docs/laravel-backup/v8/introduction)
-- [Permissions & Roles](https://spatie.be/docs/laravel-permission/v6/introduction).
-- [Data](https://spatie.be/docs/laravel-data/v4/introduction).
-- [Activity log](https://spatie.be/docs/laravel-activitylog/v4/introduction).
-- [Query builder](https://spatie.be/docs/laravel-query-builder/v5/installation-setup)
-- [Notification logs](https://spatie.be/docs/laravel-notification-log/v1/introduction)
+### Cloud (Modules/Cloud)
+- [ ] Servers
+  - [x] Create new server
+  - [x] Use Hetzner integration to fetch VPS servers
+  - [x] Check when server is accepting connections
+  - [x] Add user public key to authorized_keys
+  - [x] Provision server with shell scripts (storage/app/scripts/server)
+  - [x] Stream the logs from the shell scripts through websockets
+  - [x] Make a master kubernetes cluster so other kubernetes clusters can join as workers
+  - [ ] Choose between normal webserver and kubernetes cluster
+- [ ] Projects
+  - [x] Create new project
+  - [x] Use the Github integration
+  - [x] Provision project on selected server with shell scripts (storage/app/scripts/project)
+  - [x] Automatic deployments through Github workflow or webhook (like Vercel on PR and/or commits)
+  - [ ] Deploy with multiple environments (dev, staging, production)
+- [ ] Database
+  - [ ] Create a new database node (docker, kubernetes or on server itself?)
+  - [ ] Create new databases inside the node
+  - [ ] Create new users for the databases inside the node
+- [ ] Scripts
+  - [ ] Create custom script
+  - [ ] Update scripts
+  - [ ] Hook script on events
+- [ ] Backups
+  - [ ] Automatic backups for servers, projects and database nodes
+  - [ ] Option to use AWS S3 or SFTP to server
 
-### First party packages
-- [Laravel Websockets (Realtime)](https://laravel.com/docs/11.x/reverb)
-- [Laravel Pennant](https://laravel.com/docs/11.x/pennant).
-- [Laravel Horison (Queue)](https://laravel.com/docs/11.x/horizon).
-- [Laravel Telescope (Logs)][https://laravel.com/docs/11.x/telescope]
-- [Fortify?](https://laravel.com/docs/11.x/fortify).
+### User Portal (Modules/UserPortal)
+- [ ] Profile
+  - [x] Update profile information
+  - [x] Add Public SSH Keys
+  - [x] Connect with integrations (Github, Slack, Cloudflare, Hetzner, Google Analytics)
+  - [ ] General preferences for backups (maybe Hetzner snapshot features?)
+  - [ ] Security preferences
+  - [ ] Settings (General)
+  - [ ] Invoices
+- [ ] Subscription
+  - [ ] Show all packages
+  - [ ] Subscribe to package
+  - [ ] Manage subscription
+- [ ] Documentation
+  - [ ] Some kind of docs framework with markdown support

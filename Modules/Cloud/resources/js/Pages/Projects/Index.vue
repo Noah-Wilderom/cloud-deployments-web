@@ -205,9 +205,9 @@ const create = () => {
                                             </a>
                                         </td>
                                         <td>
-                                            <a class="btn btn-sm btn-light" href="#">
-                                                Edit
-                                            </a>
+                                            <Link class="btn btn-sm btn-light" :href="route('cloud::projects.show', { project: project.public_id })">
+                                                Show
+                                            </Link>
                                         </td>
                                     </tr>
                                     </tbody>

@@ -14,6 +14,8 @@ class GitRepositoryData extends Data
         public string $id,
         public string $sshCloneUrl,
         public string $name,
+        public string $username,
+        public string $repository,
         public string $url,
     ) {}
 
@@ -35,6 +37,8 @@ class GitRepositoryData extends Data
             id: $githubId,
             sshCloneUrl: $response["ssh_url"],
             name: $response["full_name"],
+            username: explode("/", $response["full_name"])[0],
+            repository: $response["name"],
             url: $response["html_url"],
         );
     }

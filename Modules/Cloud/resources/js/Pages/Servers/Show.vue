@@ -17,6 +17,14 @@ const props = defineProps({
     server: Object,
 })
 
+const copySSH = async () => {
+    const text = `ssh root@${props.server.host.ipv4}`
+    const type = "text/plain";
+    const blob = new Blob([text], { type });
+    const data = [new ClipboardItem({ [type]: blob })];
+    await navigator.clipboard.write(data);
+}
+
 const joinChannels = () => {
     Echo.private(`server-updated.${props.server.id}`)
         .listen("\\Modules\\Cloud\\Events\\ServerUpdated", (e) => {
@@ -219,12 +227,12 @@ onBeforeUnmount(() => {
                         </button>
                         <div class="dropdown-content menu-default w-full max-w-[220px]">
                             <div class="menu-item" data-dropdown-dismiss="true">
-                                <button class="menu-link" data-modal-toggle="#share_profile_modal">
+                                <button class="menu-link" @click="copySSH" >
                                     <span class="menu-icon">
-                                        <i class="ki-filled ki-coffee"></i>
+                                        <i class="ki-filled ki-shield-tick"></i>
                                     </span>
                                     <span class="menu-title">
-                                        Share Profile
+                                        SSH
                                     </span>
                                 </button>
                             </div>

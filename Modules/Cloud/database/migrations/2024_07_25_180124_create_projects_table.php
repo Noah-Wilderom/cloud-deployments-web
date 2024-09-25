@@ -17,10 +17,12 @@ return new class extends Migration
             $table->foreignIdFor(\Modules\Services\Models\Customer::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\Modules\Services\Models\Domain::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\Modules\Cloud\Models\Server::class)->constrained()->cascadeOnDelete();
+            $table->string("public_id");
             $table->boolean("initialized");
             $table->string("sub_domain")->nullable();
             $table->string("template");
             $table->string("name");
+            $table->string("ssh_user");
             $table->text("ssh_credentials_path");
             $table->text("host_ssh_credentials_path");
             $table->text("git_repository");

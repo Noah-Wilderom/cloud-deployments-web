@@ -20,6 +20,7 @@ const logoutForm = useForm({})
                 <a class="shrink-0" href="html/demo1.html">
                     <img class="max-h-[25px] w-full" :src="assetPath + '/logos/logo.svg'"/>
                 </a>
+
                 <div class="flex items-center">
                     <button class="btn btn-icon btn-light btn-clear btn-sm" data-drawer-toggle="#sidebar">
                         <i class="ki-filled ki-menu">

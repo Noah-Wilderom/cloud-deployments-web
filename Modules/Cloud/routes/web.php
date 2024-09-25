@@ -24,6 +24,7 @@ Route::get("/servers/{server}", [ServerController::class, "show"])->name("server
 Route::post("/servers", [ServerController::class, "store"])->name("servers.store");
 
 Route::get("/projects", [ProjectController::class, "index"])->name("projects.index");
+Route::get("/projects/{project}", [ProjectController::class, "show"])->name("projects.show");
 Route::post("/projects", [ProjectController::class, "store"])->name("projects.store");
 
 Route::get("/scripts", [ScriptController::class, "index"])->name("scripts.index");

@@ -8,7 +8,7 @@ enum ProjectTemplate: string {
     case Go = "go";
     case Docker = "docker";
 
-    public function requiredSoftwares(): array {
+    public function requiredSoftware(): array {
         return match($this) {
             self::Laravel => [
                 Software::Nginx,

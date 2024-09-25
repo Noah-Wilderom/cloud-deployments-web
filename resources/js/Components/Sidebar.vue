@@ -10,6 +10,7 @@ import SidebarDropdownItem from "./SidebarDropdownItem.vue";
 const page = usePage()
 
 const assetPath = computed(() => page.props.assetPath)
+const version = computed(() => page.props.version)
 </script>
 
 <template>
@@ -29,6 +30,11 @@ const assetPath = computed(() => page.props.assetPath)
         <div class="sidebar-content flex grow shrink-0 py-5 pr-2" id="sidebar_content">
             <div class="scrollable-y-hover grow shrink-0 flex pl-2 lg:pl-5 pr-1 lg:pr-3" data-scrollable="true" data-scrollable-dependencies="#sidebar_header" data-scrollable-height="auto" data-scrollable-offset="0px" data-scrollable-wrappers="#sidebar_content" id="sidebar_scrollable">
                 <div class="menu flex flex-col grow gap-0.5" data-menu="true" data-menu-accordion-expand-all="false" id="sidebar_menu">
+                    <div class="flex justify-end items-end">
+                        <span class="badge badge-xs bg-gray-300 font-bold text-xs dark:text-white text-dark">
+                            {{ version }}
+                        </span>
+                    </div>
                     <SidebarItem
                         :route="$route('dashboard')"
                         icon="ki-home"

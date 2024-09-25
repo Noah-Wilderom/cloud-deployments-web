@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Version;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
@@ -40,6 +41,7 @@ class HandleInertiaRequests extends Middleware
             "appName" => config("app.name"),
             "assetPath" => asset("assets/", str_contains(config("app.url"), "https://")),
             "baseUrl" => config("app.url"),
+            "version" => app(Version::class)->fullVersion(),
             'auth.user' => fn () => $request->user()
                 ? $request->user()
                 : null,

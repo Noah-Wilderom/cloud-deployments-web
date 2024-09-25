@@ -37,8 +37,9 @@ class ServerController extends Controller
         }
 
         return inertia("Cloud::Servers/Index", [
-            "servers" => Server::all(),
-            "customers" => Customer::all(),
+            "teams" => auth()->user()->allTeams(),
+            "servers" => Server::forAuthUser()->get(),
+            "customers" => Customer::forAuthUser()->get(),
             "cloudTypes" => $hetznerServerTypes,
             "serverTypes" => ServerType::allForSelect(),
             "randomName" => generate_random_name(),
@@ -76,7 +77,8 @@ class ServerController extends Controller
 
         $serverRespData = $serverResp->getResponsePart("server");
         $server = Server::create([
-            "user_id" => $request->user()->id,
+            "team_id" => $request->get("team_id"),
+            "creator_id" => $request->user()->getKey(),
             "customer_id" => $request->get("customer_id"),
             "type" => $request->get("type"),
             "ssh_credentials_path" => $sshKeyPairDir,

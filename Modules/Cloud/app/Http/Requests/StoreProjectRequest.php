@@ -3,6 +3,7 @@
 namespace Modules\Cloud\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Modules\Cloud\Enums\ProjectTemplate;
 
@@ -14,6 +15,7 @@ class StoreProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "team_id" => [Rule::requiredIf(fn() => auth()->user()->allTeams()->count() > 1), "exists:teams,id"],
             "customer_id" => ["nullable", "exists:customers,id"],
             "domain_id" => ["required", "exists:domains,id"],
             "server_id" => ["required", "exists:servers,id"],

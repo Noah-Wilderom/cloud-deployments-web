@@ -48,7 +48,7 @@ const version = computed(() => page.props.version)
                     >
                         <SidebarDropdownItem
                             title="Teams"
-                            :route="$route('teams::users.index')"
+                            :route="$route('teams::index')"
                         />
                         <SidebarDropdownItem
                             title="Users"

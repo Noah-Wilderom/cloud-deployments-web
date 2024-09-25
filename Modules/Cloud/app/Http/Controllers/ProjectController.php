@@ -42,9 +42,10 @@ class ProjectController extends Controller
 
         return inertia("Cloud::Projects/Index", [
             "projects" => $projects,
-            "servers" => Server::all(),
-            "customers" => Customer::all(),
-            "domains" => Domain::all(),
+            "teams" => auth()->user()->allTeams(),
+            "servers" => Server::forAuthUser()->get(),
+            "customers" => Customer::forAuthUser()->get(),
+            "domains" => Domain::forAuthUser()->get(),
             "templates" => ProjectTemplate::getAllByDisplayName(),
             "repositories" => $repositories,
             "randomName" => generate_random_name(),
@@ -82,7 +83,8 @@ class ProjectController extends Controller
             ->generateKeyPair($hostSshPrivKeyPath, $hostSshPubKeyPath);
 
         $project = Project::create([
-            "user_id" => $request->user()->getKey(),
+            "user_id" => $request->get("team_id"),
+            "creator_id" => $request->user()->getKey(),
             "customer_id" => $request->get("customer_id"),
             "domain_id" => $request->get("domain_id"),
             "server_id" => $request->get("server_id"),

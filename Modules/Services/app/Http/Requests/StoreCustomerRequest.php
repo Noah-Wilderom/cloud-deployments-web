@@ -3,6 +3,7 @@
 namespace Modules\Services\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCustomerRequest extends FormRequest
 {
@@ -12,6 +13,7 @@ class StoreCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "team_id" => [Rule::requiredIf(fn() => auth()->user()->allTeams()->count() > 1), "exists:teams,id"],
             "company_name" => ["required", "string", "max:255"],
             "name" => ["required", "string", "max:255"],
             "email" => ["required", "email:strict"],

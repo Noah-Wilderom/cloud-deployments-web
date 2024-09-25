@@ -1,6 +1,6 @@
 # Cloud Deployments
 This is a personal project which i have made many times before, in other languages and in CLI.  
-This project is inspired by other softwares like Plesk, Coolify, Vercel, Ploi etc.
+This project is inspired by other softwares like Plesk, Coolify, Vercel, Ploi, Laravel Cloud etc.
 
 ## Tech Stack
 - PHP 8.3

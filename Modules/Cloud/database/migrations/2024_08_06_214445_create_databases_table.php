@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('databases', function (Blueprint $table) {
             $table->id();
-            
+            $table->foreignIdFor(\Modules\Teams\Models\Team::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\User::class, "creator_id")->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

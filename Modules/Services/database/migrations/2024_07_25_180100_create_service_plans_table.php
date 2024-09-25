@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('service_plans', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\Modules\Teams\Models\Team::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\User::class, "creator_id")->nullable()->constrained()->nullOnDelete();
             $table->string("service_type")->nullable();
             $table->string("name");
             $table->integer("base_price");

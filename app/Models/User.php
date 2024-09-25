@@ -9,15 +9,19 @@ use App\Models\Traits\HasUuidV7;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Modules\Services\Models\Customer;
 use Modules\Services\Models\Domain;
+use Modules\Teams\Models\Team;
+use Modules\Teams\Models\TeamUser;
 use Spatie\Activitylog\Traits\CausesActivity;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
@@ -161,5 +165,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->userIntegrations()
             ->where("provider", $provider)
             ->first();
+    }
+
+    public function teams(): HasMany {
+        return $this->hasMany(Team::class, "owner_id");
+    }
+
+    public function associatedTeams(): BelongsToMany {
+        return $this->belongsToMany(Team::class)
+            ->using(TeamUser::class);
+    }
+
+    public function allTeams(): Collection {
+        return collect($this->teams()->collect())->merge($this->associatedTeams()->collect());
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Cloud\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Modules\Cloud\Enums\ServerType;
 
@@ -14,6 +15,7 @@ class StoreServerRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "team_id" => [Rule::requiredIf(fn() => auth()->user()->allTeams()->count() > 1), "exists:teams,id"],
             "customer_id" => ["required", "exists:customers,id"],
             "type" => ["required", new Enum(ServerType::class)],
             "name" => ["required", "string", "max:255"],

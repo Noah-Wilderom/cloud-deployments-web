@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('domains', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\Modules\Teams\Models\Team::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\User::class, "creator_id")->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(\Modules\Services\Models\Customer::class)->constrained()->cascadeOnDelete();
             $table->string("name");
             $table->boolean("verified");

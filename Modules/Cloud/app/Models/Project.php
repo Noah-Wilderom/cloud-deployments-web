@@ -6,6 +6,7 @@ use App\Events\SSHLogStreamBase;
 use App\Models\Traits\HasPublicId;
 use App\Models\Traits\HasUuidV7;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,7 @@ use Modules\Cloud\Enums\ProjectTemplate;
 use Modules\Services\Models\Customer;
 use Modules\Services\Models\Domain;
 use Modules\Services\Models\ServicePlan;
+use Modules\Teams\Models\Team;
 use Valorin\Random\Random;
 
 class Project extends Model
@@ -25,7 +27,8 @@ class Project extends Model
     use HasUuidV7, HasPublicId;
     protected $fillable = [
         "public_id",
-        "user_id",
+        "team_id",
+        "creator_id",
         "customer_id",
         "domain_id",
         "server_id",
@@ -96,8 +99,17 @@ class Project extends Model
             : sprintf("%s.%s", $this->sub_domain, $this->domain->name);
     }
 
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
+    public function team(): BelongsTo {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function scopeForAuthUser(Builder $query): Builder {
+        $teamIds = auth()->user()->allTeams()->pluck("id");
+        return $query->whereIn("team_id", $teamIds);
+    }
+
+    public function creator(): BelongsTo {
+        return $this->belongsTo(User::class, "creator_id");
     }
 
     public function customer(): BelongsTo {

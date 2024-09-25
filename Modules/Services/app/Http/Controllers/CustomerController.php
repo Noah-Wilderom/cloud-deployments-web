@@ -12,7 +12,8 @@ class CustomerController extends Controller
 {
     public function index(): InertiaResponse {
         return inertia("Services::Customers/Index", [
-            "customers" => Customer::all(),
+            "teams" => auth()->user()->allTeams(),
+            "customers" => Customer::forAuthUser(),
         ]);
     }
 

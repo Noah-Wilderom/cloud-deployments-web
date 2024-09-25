@@ -4,6 +4,7 @@ namespace Modules\Services\Http\Requests;
 
 use App\Rules\UuidV7Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreSubscriptionRequest extends FormRequest
 {
@@ -13,6 +14,7 @@ class StoreSubscriptionRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "team_id" => [Rule::requiredIf(fn() => auth()->user()->allTeams()->count() > 1), "exists:teams,id"],
             "customer_id" => ["required", "exists:customers,id"],
             "service_plan_id" => ["required", "exists:service_plans,id"],
             "service_id" => ["nullable", new UuidV7Rule],

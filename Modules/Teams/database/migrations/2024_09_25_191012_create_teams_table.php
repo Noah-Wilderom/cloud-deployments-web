@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignIdFor(\Modules\Teams\Models\Team::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\User::class, "creator_id")->nullable()->constrained()->nullOnDelete();
-            $table->string("company_name");
+            $table->foreignIdFor(\App\Models\User::class, "owner_id")->constrained()->cascadeOnDelete();
             $table->string("name");
-            $table->string("email");
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('teams');
     }
 };
